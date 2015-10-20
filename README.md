@@ -15,9 +15,11 @@ if( ! class_exists( 'S214_Settings' ) ) {
   require_once __DIR__ . 'source/class.s214-settings.php';
 }
 
-$settings = new S214_Settings( 'your-plugin' );
+$settings = new S214_Settings( 'your-plugin', 'general' );
 $your_plugin_options = $settings->get_settings();
 ```
+
+The S214_Settings class takes two arguements. The first, is the slug of your project. The second is the slug of the tab we want to load by default on the settings page. More on settings tabs in a moment.
 
 At this point, we now have a global `$your_plugin_options` containing an array of the available options for your plugin. Of course, we haven't defined and options, so right now it's just a blank array... not very useful!
 
@@ -47,7 +49,7 @@ function your_plugin_add_menu( $menu ) {
   $menu['menu_title'] = __( 'Your Plugin', 'your-plugin' );           // The menu title. Defaults to 'Section214 Settings'.
   $menu['capability'] = 'manage_options';                             // The minimum capability required to access the settings panel. Defaults to 'manage_options'.
   $menu['position']   = null;                                         // Where in the menu to display our new menu. Defaults to 'null' (bottom of the menu).
-  
+
   return $menu;
 }
 add_filter( 'your_plugin_menu', 'your_plugin_add_menu' );
@@ -94,7 +96,7 @@ function your_plugin_settings( $settings ) {
       )
     )
   );
-  
+
   return array_merge( $settings, $plugin_settings );
 }
 add_filter( 'your_plugin_registered_settings', 'your_plugin_settings' );
