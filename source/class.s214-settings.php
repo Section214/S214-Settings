@@ -349,7 +349,6 @@ class S214_Settings {
 						'multiple'      => isset( $option['multiple'] )     ? $option['multiple']       : null,
 						'allow_blank'   => isset( $option['allow_blank'] )  ? $option['allow_blank']    : true,
 						'readonly'      => isset( $option['readonly'] )     ? $option['readonly']       : false,
-						'faux'          => isset( $option['faux'] )         ? $option['faux']           : false,
 						'buttons'       => isset( $option['buttons'] )      ? $option['buttons']        : null,
 						'wpautop'       => isset( $option['wpautop'] )      ? $option['wpautop']        : null,
 						'teeny'         => isset( $option['teeny'] )        ? $option['teeny']          : null
@@ -457,12 +456,7 @@ class S214_Settings {
 	public function checkbox_callback( $args ) {
 		global ${$this->func . '_options'};
 
-		if( isset( $args['faux'] ) && $args['faux'] === true ) {
-			$name = '';
-		} else {
-			$name = ' name="' . $this->func . '_settings[' . $args['id'] . ']"';
-		}
-
+		$name    = ' name="' . $this->func . '_settings[' . $args['id'] . ']"';
 		$checked = isset( ${$this->func . '_options'}[$args['id']] ) ? checked( 1, ${$this->func . '_options'}[$args['id']], false ) : '';
 
 		$html  = '<input type="checkbox" id="' . $this->func . '_settings[' . $args['id'] . ']"' . $name . ' value="1" ' . $checked . '/>&nbsp;';
@@ -597,14 +591,7 @@ class S214_Settings {
 			$value = isset( $args['std'] ) ? $args['std'] : '';
 		}
 
-		if( isset( $args['faux'] ) && $args['faux'] === true ) {
-			$args['readonly'] = true;
-			$value = isset( $args['std'] ) ? $args['std'] : '';
-			$name  = '';
-		} else {
-			$name  = ' name="' . $this->func . '_settings[' . $args['id'] . ']"';
-		}
-
+		$name   = ' name="' . $this->func . '_settings[' . $args['id'] . ']"';
 		$max    = isset( $args['max'] ) ? $args['max'] : 999999;
 		$min    = isset( $args['min'] ) ? $args['min'] : 0;
 		$step   = isset( $args['step'] ) ? $args['step'] : 1;
@@ -744,14 +731,7 @@ class S214_Settings {
 			$value = isset( $args['std'] ) ? $args['std'] : '';
 		}
 
-		if( isset( $args['faux'] ) && $args['faux'] === true ) {
-			$args['readonly'] = true;
-			$value = isset( $args['std'] ) ? $args['std'] : '';
-			$name  = '';
-		} else {
-			$name  = ' name="' . $this->func . '_settings[' . $args['id'] . ']"';
-		}
-
+		$name     = ' name="' . $this->func . '_settings[' . $args['id'] . ']"';
 		$readonly = $args['readonly'] === true ? ' readonly="readonly"' : '';
 		$size     = ( isset( $args['size'] ) && ! is_null( $args['size'] ) ) ? $args['size'] : 'regular';
 
