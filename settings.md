@@ -90,3 +90,39 @@ Beyond the required options, this field type takes no arguements.
 |Field|Description|Default|
 |-----|-----------|-------|
 |std|The default value for this field|empty string|
+
+#### hook (implements a custom field through a WordPress action)
+
+Beyond the required options, this field type takes no arguements. This field is rendered based on the action `your_plugin_<field_id>`. In other words, if you added a hook field with an ID of `custom_field`, you would have to hook `your_plugin_custom_field` to render it.
+
+## Settings methods
+
+The following methods are available for working with your settings:
+
+#### get_option( $key, $default );
+
+|Arguement|Description|
+|---------|-----------|
+|$key|`string` The settings key to retrieve|
+|$default|`mixed` A default value to return if the key is unavailable|
+
+#### update_option( $key, $value );
+
+|Arguement|Description|
+|---------|-----------|
+|$key|`string` The settings key to update|
+|$value|`mixed` The new value for this key. __If you leave this empty or set it to `false`, the key will be deleted!__|
+
+#### delete_option( $key );
+
+|Arguement|Description|
+|---------|-----------|
+|$key|`string` The settings key to delete|
+
+#### get_settings();
+
+Retrieves all settings, does not take an arguement.
+
+## Comments
+
+Beyond the above listed methods, there are numerous hooks scattered throughout the library. Please feel free to tear it appart, figure out how it works, and improve it if you can!
