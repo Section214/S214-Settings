@@ -25,28 +25,28 @@ class S214_Settings {
 	 * @var         string $version The settings class version
 	 * @since       1.0.0
 	 */
-	public $version = '1.0.0';
+	private $version = '1.0.0';
 
 
 	/**
 	 * @var         string $slug The plugin slug
 	 * @since       1.0.0
 	 */
-	public $slug;
+	private $slug;
 
 
 	/**
 	 * @var         string $func The plugin slug for names
 	 * @since       1.0.0
 	 */
-	public $func;
+	private $func;
 
 
 	/**
 	 * @var         string $default_tab The default tab to display
 	 * @since       1.0.0
 	 */
-	public $default_tab;
+	private $default_tab;
 
 
 	/**
@@ -77,11 +77,11 @@ class S214_Settings {
 	/**
 	 * Run action and filter hooks
 	 *
-	 * @access      public
+	 * @access      private
 	 * @since       1.0.0
 	 * @return      void
 	 */
-	public function hooks() {
+	private function hooks() {
 		// Add the plugin setting page
 		add_action( 'admin_menu', array( $this, 'add_settings_page' ), 10 );
 
@@ -169,11 +169,11 @@ class S214_Settings {
 	/**
 	 * Retrieve the settings tabs
 	 *
-	 * @access      public
+	 * @access      private
 	 * @since       1.0.0
 	 * @return      array $tabs The registered tabs for this plugin
 	 */
-	public function get_settings_tabs() {
+	private function get_settings_tabs() {
 		return apply_filters( $this->func . '_settings_tabs', array() );
 	}
 
@@ -181,11 +181,11 @@ class S214_Settings {
 	/**
 	 * Retrieve the plugin settings
 	 *
-	 * @access      public
+	 * @access      private
 	 * @since       1.0.0
 	 * @return      array $settings The plugin settings
 	 */
-	public function get_registered_settings() {
+	private function get_registered_settings() {
 		return apply_filters( $this->func . '_registered_settings', array() );
 	}
 
