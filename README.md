@@ -19,7 +19,7 @@ $settings = new S214_Settings( 'your-plugin', 'general' );
 $your_plugin_options = $settings->get_settings();
 ```
 
-The S214_Settings class takes two arguements. The first, is the slug of your project. The second is the slug of the tab we want to load by default on the settings page. More on settings tabs in a moment.
+The S214_Settings class takes two arguments. The first, is the slug of your project. The second is the slug of the tab we want to load by default on the settings page. More on settings tabs in a moment.
 
 At this point, we now have a global `$your_plugin_options` containing an array of the available options for your plugin. Of course, we haven't defined and options, so right now it's just a blank array... not very useful!
 
@@ -116,6 +116,6 @@ For the moment, we're going to assume that when you instantiated the settings cl
 
 `$settings->get_option( 'your_first_setting' );`
 
-The `get_option()` method takes two arguements: `key` and `default`. The first arguement, key, is mandatory. This is the ID of the setting we want to retrieve. The second arguement is optional and specifies a default value to return if the specified key isn't saved.
+The `get_option()` method takes two arguments: `key` and `default`. The first arguement, key, is mandatory. This is the ID of the setting we want to retrieve. The second arguement is optional and specifies a default value to return if the specified key isn't saved.
 
 That's it! You're all set! Don't forget to read the [settings reference](https://github.com/Section214/S214-Settings/blob/master/settings.md) for further info storing and working with settings!

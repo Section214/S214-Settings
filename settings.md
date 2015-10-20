@@ -1,10 +1,10 @@
 ## Basic Settings
 
-The arguements `id`, `name`, `desc` and `type` are __required__ for every field! Arguements in __bold__ are required.
+The arguments `id`, `name`, `desc` and `type` are __required__ for every field! Arguements in __bold__ are required.
 
 #### header (implements a simple header)
 
-Beyond the required options, this field type takes no arguements.
+Beyond the required options, this field type takes no arguments.
 
 #### checkbox (implements a checkbox)
 
@@ -20,7 +20,7 @@ Beyond the required options, this field type takes no arguements.
 
 #### descriptive_text (implements a descriptive text field)
 
-Beyond the required options, this field type takes no arguements.
+Beyond the required options, this field type takes no arguments.
 
 #### editor (implements a rich text editor)
 
@@ -93,7 +93,7 @@ Beyond the required options, this field type takes no arguements.
 
 #### hook (implements a custom field through a WordPress action)
 
-Beyond the required options, this field type takes no arguements. This field is rendered based on the action `your_plugin_<field_id>`. In other words, if you added a hook field with an ID of `custom_field`, you would have to hook `your_plugin_custom_field` to render it.
+Beyond the required options, this field type takes no arguments. This field is rendered based on the action `your_plugin_<field_id>`. In other words, if you added a hook field with an ID of `custom_field`, you would have to hook `your_plugin_custom_field` to render it.
 
 ## Settings methods
 
