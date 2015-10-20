@@ -55,7 +55,7 @@ class S214_Settings {
 	 * @access      public
 	 * @since       1.0.1
 	 * @param       string $slug The plugin slug
-	 * @param       string $parent If using submenu, define the parent
+	 * @param       string $default_tab The default settings tab to display
 	 * @return      void
 	 */
 	public function __construct( $slug = false, $default_tab = 'general' ) {
