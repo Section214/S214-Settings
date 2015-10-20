@@ -352,12 +352,7 @@ class S214_Settings {
 						'faux'          => isset( $option['faux'] )         ? $option['faux']           : false,
 						'buttons'       => isset( $option['buttons'] )      ? $option['buttons']        : null,
 						'wpautop'       => isset( $option['wpautop'] )      ? $option['wpautop']        : null,
-						'teeny'         => isset( $option['teeny'] )        ? $option['teeny']          : null,
-						'notice'        => isset( $option['notice'] )       ? $option['notice']         : false,
-						'style'         => isset( $option['style'] )        ? $option['style']          : null,
-						'header'        => isset( $option['header'] )       ? $option['header']         : null,
-						'icon'          => isset( $option['icon'] )         ? $option['icon']           : null,
-						'class'         => isset( $option['class'] )        ? $option['class']          : null
+						'teeny'         => isset( $option['teeny'] )        ? $option['teeny']          : null
 					)
 				);
 			}
