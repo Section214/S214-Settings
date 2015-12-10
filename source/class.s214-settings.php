@@ -130,7 +130,7 @@ class S214_Settings {
 	 * @return      void
 	 */
 	public function render_settings_page() {
-		$active_tab = isset( $_GET['tab'] ) && array_key_exists( $_GET['tab'], $this->get_settings_tabs() ) ? $_GET['tab'] : 'general';
+		$active_tab = isset( $_GET['tab'] ) && array_key_exists( $_GET['tab'], $this->get_settings_tabs() ) ? $_GET['tab'] : $this->default_tab;
 
 		ob_start();
 		?>
