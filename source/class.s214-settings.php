@@ -563,7 +563,11 @@ class S214_Settings {
 
 		if( ! empty( $args['options'] ) ) {
 			foreach( $args['options'] as $key => $option ) {
-				$enabled = ( isset( ${$this->func . '_options'}[$args['id']][$key] ) ? $option : NULL );
+				if( isset( ${$this->func . '_options'}[$args['id']][$key] ) ) {
+					$enabled = $option;
+				} else {
+					$enabled = isset( $args['std'][$key] ) ? $args['std'][$key] : NULL;
+				}
 
 				echo '<input name="' . $this->func . '_settings[' . $args['id'] . '][' . $key . ']" id="' . $this->func . '_settings[' . $args['id'] . '][' . $key . ']" type="checkbox" value="' . $option . '" ' . checked( $option, $enabled, false ) . ' />&nbsp;';
 				echo '<label for="' . $this->func . '_settings[' . $args['id'] . '][' . $key . ']">' . $option . '</label><br />';
