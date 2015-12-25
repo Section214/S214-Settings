@@ -157,7 +157,11 @@ class S214_Settings {
 						do_settings_fields( $this->func . '_settings_' . $active_tab, $this->func . '_settings_' . $active_tab );
 						?>
 					</table>
-					<?php submit_button(); ?>
+					<?php
+					if( ! in_array( $active_tab, apply_filters( $this->func . '_unsavable_tabs', array() ) ) ) {
+						submit_button();
+					}
+					?>
 				</form>
 			</div>
 		</div>
