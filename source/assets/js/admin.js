@@ -23,6 +23,17 @@ jQuery(document).ready(function ($) {
         $('.s214-select2').select2();
     }
 
+    // Setup CodeMirror
+    if ($('.s214-html').length) {
+        $('.s214-html').each(function(index, elem) {
+            CodeMirror.fromTextArea(elem, {
+                lineNumbers: true,
+                mode: 'text/html',
+                showCursorWhenSelecting: true
+            });
+        });
+    }
+
     // Setup uploaders
     if ($('.' + s214_settings_vars.func + '_settings_upload_button').length) {
         $('body').on('click', '.' + s214_settings_vars.func + '_settings_upload_button', function (e) {

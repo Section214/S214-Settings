@@ -131,6 +131,14 @@ class S214_Settings {
 	 */
 	public function render_settings_page() {
 		$active_tab = isset( $_GET['tab'] ) && array_key_exists( $_GET['tab'], $this->get_settings_tabs() ) ? $_GET['tab'] : $this->default_tab;
+		$sections   = $registered_sections = $this->get_settings_tab_sections( $active_tab );
+		$key        = 'main';
+
+		if( is_array( $sections ) ) {
+			$key = key( $sections );
+		}
+
+		$section = isset( $_GET['section'] ) && ! empty( $registered_sections ) && array_key_exists( $_GET['section'], $registered_sections ) ? $_GET['section'] : $key;
 
 		ob_start();
 		?>
@@ -143,18 +151,60 @@ class S214_Settings {
 						'tab'               => $tab_id
 					) );
 
+					// Remove the section from the tabs so we always end up at the main section
+					$tab_url = remove_query_arg( 'section', $tab_url );
+
 					$active = $active_tab == $tab_id ? ' nav-tab-active' : '';
 
 					echo '<a href="' . esc_url( $tab_url ) . '" title="' . esc_attr( $tab_name )  . '" class="nav-tab' . $active . '">' . esc_html( $tab_name ) . '</a>';
 				}
 				?>
 			</h2>
+			<?php
+			$number_of_sections = count( $sections );
+			$number = 0;
+
+			if( $number_of_sections > 1 ) {
+				echo '<div><ul class="subsubsub">';
+
+				foreach( $sections as $section_id => $section_name ) {
+					echo '<li>';
+
+					$number++;
+					$tab_url = add_query_arg( array(
+						'settings-updated' => false,
+						'tab'              => $active_tab,
+						'section'          => $section_id
+					) );
+					$class = '';
+
+					if( $section == $section_id ) {
+						$class = 'current';
+					}
+
+					echo '<a class="' . $class . '" href="' . esc_url( $tab_url ) . '">' . $section_name . '</a>';
+
+					if( $number != $number_of_sections ) {
+						echo ' | ';
+					}
+
+					echo '</li>';
+				}
+
+				echo '</ul></div>';
+			}
+			?>
 			<div id="tab_container">
 				<form method="post" action="options.php">
 					<table class="form-table">
 						<?php
 						settings_fields( $this->func . '_settings' );
-						do_settings_fields( $this->func . '_settings_' . $active_tab, $this->func . '_settings_' . $active_tab );
+
+						do_action( $this->func . '_settings_tab_top_' . $active_tab . '_' . $section );
+
+						do_settings_sections( $this->func . '_settings_' . $active_tab . '_' . $section );
+
+						do_action( $this->func . '_settings_tab_bottom_' . $active_tab . '_' . $section );
 						?>
 					</table>
 					<?php
@@ -183,6 +233,28 @@ class S214_Settings {
 
 
 	/**
+	 * Retrieve settings tab sections
+	 *
+	 * @access      private
+	 * @since       1.0.1
+	 * @param       string $tab The current tab
+	 * @return      array $section The section items
+	 */
+	private function get_settings_tab_sections( $tab = false ) {
+		$tabs     = false;
+		$sections = $this->get_registered_settings_sections();
+
+		if( $tab && ! empty( $sections[$tab] ) ) {
+			$tabs = $sections[$tab];
+		} elseif( $tab ) {
+			$tabs = false;
+		}
+
+		return $tabs;
+	}
+
+
+	/**
 	 * Retrieve the plugin settings
 	 *
 	 * @access      private
@@ -191,6 +263,26 @@ class S214_Settings {
 	 */
 	private function get_registered_settings() {
 		return apply_filters( $this->func . '_registered_settings', array() );
+	}
+
+
+	/**
+	 * Retrieve the plugin settings sections
+	 *
+	 * @access      private
+	 * @since       1.0.1
+	 * @return      array $sections The registered sections
+	 */
+	private function get_registered_settings_sections() {
+		static $sections = false;
+
+		if( $sections !== false ) {
+			return $sections;
+		}
+
+		$sections = apply_filters( $this->func . '_registered_settings_sections', array() );
+
+		return $sections;
 	}
 
 
@@ -320,44 +412,59 @@ class S214_Settings {
 			add_option( $this->func . '_settings' );
 		}
 
-		foreach( $this->get_registered_settings() as $tab => $settings ) {
-			add_settings_section(
-				$this->func . '_settings_' . $tab,
-				__return_null(),
-				'__return_false',
-				$this->func . '_settings_' . $tab
-			);
+		foreach( $this->get_registered_settings() as $tab => $sections ) {
+			foreach( $sections as $section => $settings ) {
+				// Check for backwards compatibility
+				$section_tabs = $this->get_settings_tab_sections( $tab );
 
-			foreach( $settings as $option ) {
-				$name = isset( $option['name'] ) ? $option['name'] : '';
+				if( ! is_array( $section_tabs ) || ! array_key_exists( $section, $section_tabs ) ) {
+					$section  = 'main';
+					$settings = $sections;
+				}
 
-				add_settings_field(
-					$this->func . '_settings[' . $option['id'] . ']',
-					$name,
-					function_exists( $this->func . '_' . $option['type'] . '_callback' ) ? $this->func . '_' . $option['type'] . '_callback' : ( method_exists( $this, $option['type'] . '_callback' ) ? array( $this, $option['type'] . '_callback' ) : array( $this, 'missing_callback' ) ),
-					$this->func . '_settings_' . $tab,
-					$this->func . '_settings_' . $tab,
-					array(
-						'section'       => $tab,
-						'id'            => isset( $option['id'] )           ? $option['id']             : null,
-						'desc'          => ! empty( $option['desc'] )       ? $option['desc']           : '',
-						'name'          => isset( $option['name'] )         ? $option['name']           : null,
-						'size'          => isset( $option['size'] )         ? $option['size']           : null,
-						'options'       => isset( $option['options'] )      ? $option['options']        : '',
-						'std'           => isset( $option['std'] )          ? $option['std']            : '',
-						'min'           => isset( $option['min'] )          ? $option['min']            : null,
-						'max'           => isset( $option['max'] )          ? $option['max']            : null,
-						'step'          => isset( $option['step'] )         ? $option['step']           : null,
-						'select2'       => isset( $option['select2'] )      ? $option['select2']        : null,
-						'placeholder'   => isset( $option['placeholder'] )  ? $option['placeholder']    : null,
-						'multiple'      => isset( $option['multiple'] )     ? $option['multiple']       : null,
-						'allow_blank'   => isset( $option['allow_blank'] )  ? $option['allow_blank']    : true,
-						'readonly'      => isset( $option['readonly'] )     ? $option['readonly']       : false,
-						'buttons'       => isset( $option['buttons'] )      ? $option['buttons']        : null,
-						'wpautop'       => isset( $option['wpautop'] )      ? $option['wpautop']        : null,
-						'teeny'         => isset( $option['teeny'] )        ? $option['teeny']          : null
-					)
+				add_settings_section(
+					$this->func . '_settings_' . $tab . '_' . $section,
+					__return_null(),
+					'__return_false',
+					$this->func . '_settings_' . $tab . '_' . $section
 				);
+
+				foreach( $settings as $option ) {
+					// For backwards compatibility
+					if( empty( $option['id'] ) ) {
+						continue;
+					}
+
+					$name = isset( $option['name'] ) ? $option['name'] : '';
+
+					add_settings_field(
+						$this->func . '_settings[' . $option['id'] . ']',
+						$name,
+						function_exists( $this->func . '_' . $option['type'] . '_callback' ) ? $this->func . '_' . $option['type'] . '_callback' : ( method_exists( $this, $option['type'] . '_callback' ) ? array( $this, $option['type'] . '_callback' ) : array( $this, 'missing_callback' ) ),
+						$this->func . '_settings_' . $tab . '_' . $section,
+						$this->func . '_settings_' . $tab . '_' . $section,
+						array(
+							'section'       => $section,
+							'id'            => isset( $option['id'] )           ? $option['id']             : null,
+							'desc'          => ! empty( $option['desc'] )       ? $option['desc']           : '',
+							'name'          => isset( $option['name'] )         ? $option['name']           : null,
+							'size'          => isset( $option['size'] )         ? $option['size']           : null,
+							'options'       => isset( $option['options'] )      ? $option['options']        : '',
+							'std'           => isset( $option['std'] )          ? $option['std']            : '',
+							'min'           => isset( $option['min'] )          ? $option['min']            : null,
+							'max'           => isset( $option['max'] )          ? $option['max']            : null,
+							'step'          => isset( $option['step'] )         ? $option['step']           : null,
+							'select2'       => isset( $option['select2'] )      ? $option['select2']        : null,
+							'placeholder'   => isset( $option['placeholder'] )  ? $option['placeholder']    : null,
+							'multiple'      => isset( $option['multiple'] )     ? $option['multiple']       : null,
+							'allow_blank'   => isset( $option['allow_blank'] )  ? $option['allow_blank']    : true,
+							'readonly'      => isset( $option['readonly'] )     ? $option['readonly']       : false,
+							'buttons'       => isset( $option['buttons'] )      ? $option['buttons']        : null,
+							'wpautop'       => isset( $option['wpautop'] )      ? $option['wpautop']        : null,
+							'teeny'         => isset( $option['teeny'] )        ? $option['teeny']          : null
+						)
+					);
+				}
 			}
 		}
 
@@ -550,6 +657,30 @@ class S214_Settings {
 			)
 		);
 		echo '<br /><label for="' . $this->func . '_settings[' . $args['id'] . ']">' . $args['desc'] . '</label>';
+	}
+
+
+	/**
+	 * HTML callback
+	 *
+	 * @since       1.0.0
+	 * @param       array $args Arguments passed by the setting
+	 * @global      array ${$this->func . '_options'} The Beacon options
+	 * @return      void
+	 */
+	public function html_callback( $args ) {
+		global ${$this->func . '_options'};
+
+		if( isset( ${$this->func . '_options'}[$args['id']] ) ) {
+			$value = ${$this->func . '_options'}[$args['id']];
+		} else {
+			$value = isset( $args['std'] ) ? $args['std'] : '';
+		}
+
+		$html  = '<textarea class="large-text s214-html" cols="50" rows="5" id="' . $this->func . '_settings[' . $args['id'] . ']" name="' . $this->func . '_settings[' . $args['id'] . ']">' . esc_textarea( stripslashes( $value ) ) . '</textarea>&nbsp;';
+		$html .= '<label for="' . $this->func . '_settings[' . $args['id'] . ']">' . $args['desc'] . '</label>';
+
+		echo $html;
 	}
 
 
@@ -876,6 +1007,13 @@ class S214_Settings {
 		wp_enqueue_script( 'thickbox' );
 		wp_enqueue_style( 'select2', '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css', array(), '4.0.0' );
 		wp_enqueue_script( 'select2', '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js', array( 'jquery' ), '4.0.0' );
+
+		wp_enqueue_style( $this->slug . '-cm', $url_path . '/assets/js/codemirror/lib/codemirror.css', array(), '5.10' );
+		wp_enqueue_script( $this->slug . '-cm', $url_path . '/assets/js/codemirror/lib/codemirror.js', array( 'jquery' ), '5.10' );
+		wp_enqueue_script( $this->slug . '-cm-html', $url_path . '/assets/js/codemirror/mode/htmlmixed/htmlmixed.js', array( 'jquery', $this->slug . '-cm' ), '5.10' );
+		wp_enqueue_script( $this->slug . '-cm-xml', $url_path . '/assets/js/codemirror/mode/xml/xml.js', array( 'jquery', $this->slug . '-cm' ), '5.10' );
+		wp_enqueue_script( $this->slug . '-cm-js', $url_path . '/assets/js/codemirror/mode/javascript/javascript.js', array( 'jquery', $this->slug . '-cm' ), '5.10' );
+		wp_enqueue_script( $this->slug . '-cm-css', $url_path . '/assets/js/codemirror/mode/css/css.js', array( 'jquery', $this->slug . '-cm' ), '5.10' );
 
 		wp_enqueue_style( $this->slug, $url_path . '/assets/css/admin' . $suffix . '.css', array(), $this->version );
 		wp_enqueue_script( $this->slug, $url_path . '/assets/js/admin' . $suffix . '.js', array( 'jquery' ), $this->version );
