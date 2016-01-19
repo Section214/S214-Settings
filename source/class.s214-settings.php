@@ -25,7 +25,7 @@ class S214_Settings {
 	 * @var         string $version The settings class version
 	 * @since       1.0.0
 	 */
-	private $version = '1.0.0';
+	private $version = '1.0.1';
 
 
 	/**
