@@ -33,6 +33,12 @@ Beyond the required options, this field type takes no arguments.
 |buttons|A boolean specifying whether or not to display the editor buttons|`true`|
 |teeny|A boolean specifying whether or not to use the editor 'teeny' mode|`false`|
 
+#### html (implements a CodeMirror HTML field)
+
+|Field|Description|Default|
+|-----|-----------|-------|
+|std|The default value for this field|empty string|
+
 #### multicheck (implements a multicheck field)
 
 |Field|Description|Default|

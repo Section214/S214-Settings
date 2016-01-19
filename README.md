@@ -72,6 +72,23 @@ add_filter( 'your_plugin_settings_tabs', 'your_plugin_settings_tabs' );
 
 Again, pretty simple. You can add as many tabs as you want through this filter, though add too many and it might start to look a bit odd!
 
+Starting with version 1.0.1, we now support settings sections. This allows you to create sub-tabs in each main tab. This can be accomplished like so...
+
+```
+function your_plugin_settings_sections( $sections ) {
+	$sections = array(
+		'general' => array(
+			'main' => __( 'General Settings', 'your-plugin' )
+		)
+	);
+
+	return $sections;
+}
+add_filter( 'your_plugin_settings_sections', 'your_plugin_settings_sections' );
+```
+
+Sections are completely optional, but they do make it easier to sort though a lot of settings!
+
 Finally, let's populate that tab with some settings:
 
 ### Adding Settings
@@ -82,17 +99,13 @@ There are a _lot_ of possible options in creating your settings, so we're going 
 function your_plugin_settings( $settings ) {
   $plugin_settings = array(
     'general' => array(
-      array(
-        'id'   => 'general_header',
-        'name' => __( 'General Settings', 'your-plugin' ),
-        'desc' => '',
-        'type' => 'header'
-      ),
-      array(
-        'id'   => 'your_first_setting',
-        'name' => __( 'Your First Setting', 'your-plugin' ),
-        'desc' => __( 'This is your first setting!', 'your-plugin' ),
-        'type' => 'text'
+      'main' => array(
+        array(
+          'id'   => 'your_first_setting',
+          'name' => __( 'Your First Setting', 'your-plugin' ),
+          'desc' => __( 'This is your first setting!', 'your-plugin' ),
+          'type' => 'text'
+        )
       )
     )
   );
