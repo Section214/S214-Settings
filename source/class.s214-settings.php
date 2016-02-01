@@ -25,7 +25,7 @@ class S214_Settings {
 	 * @var         string $version The settings class version
 	 * @since       1.0.0
 	 */
-	private $version = '1.0.1';
+	private $version = '1.0.2';
 
 
 	/**
@@ -571,7 +571,7 @@ class S214_Settings {
 		$checked = isset( ${$this->func . '_options'}[$args['id']] ) ? checked( 1, ${$this->func . '_options'}[$args['id']], false ) : '';
 
 		$html  = '<input type="checkbox" id="' . $this->func . '_settings[' . $args['id'] . ']"' . $name . ' value="1" ' . $checked . '/>&nbsp;';
-		$html .= '<label for="' . $this->func . '_settings[' . $args['id'] . ']">' . $args['desc'] . '</label>';
+		$html .= '<span class="description"><label for="' . $this->func . '_settings[' . $args['id'] . ']">' . $args['desc'] . '</label></span>';
 
 		echo $html;
 	}
@@ -599,7 +599,7 @@ class S214_Settings {
 		$size    = ( isset( $args['size'] ) && ! is_null( $args['size'] ) ) ? $args['size'] : 'regular';
 
 		$html  = '<input type="text" class="s214-color-picker" id="' . $this->func . '_settings[' . $args['id'] . ']" name="' . $this->func . '_settings[' . $args['id'] . ']" value="' . esc_attr( $value ) . '" data-default-color="' . esc_attr( $default ) . '" />&nbsp;';
-		$html .= '<span class="s214-color-picker-label"><label for="' . $this->func . '_settings[' . $args['id'] . ']">' . $args['desc'] . '</label></span>';
+		$html .= '<span class="s214-color-picker-label description"><label for="' . $this->func . '_settings[' . $args['id'] . ']">' . $args['desc'] . '</label></span>';
 
 		echo $html;
 	}
@@ -656,7 +656,7 @@ class S214_Settings {
 				'teeny'         => $teeny
 			)
 		);
-		echo '<br /><label for="' . $this->func . '_settings[' . $args['id'] . ']">' . $args['desc'] . '</label>';
+		echo '<br /><span class="description"><label for="' . $this->func . '_settings[' . $args['id'] . ']">' . $args['desc'] . '</label></span>';
 	}
 
 
@@ -678,7 +678,7 @@ class S214_Settings {
 		}
 
 		$html  = '<textarea class="large-text s214-html" cols="50" rows="5" id="' . $this->func . '_settings[' . $args['id'] . ']" name="' . $this->func . '_settings[' . $args['id'] . ']">' . esc_textarea( stripslashes( $value ) ) . '</textarea>&nbsp;';
-		$html .= '<label for="' . $this->func . '_settings[' . $args['id'] . ']">' . $args['desc'] . '</label>';
+		$html .= '<span class="description"><label for="' . $this->func . '_settings[' . $args['id'] . ']">' . $args['desc'] . '</label></span>';
 
 		echo $html;
 	}
@@ -730,14 +730,15 @@ class S214_Settings {
 			$value = isset( $args['std'] ) ? $args['std'] : '';
 		}
 
-		$name   = ' name="' . $this->func . '_settings[' . $args['id'] . ']"';
-		$max    = isset( $args['max'] ) ? $args['max'] : 999999;
-		$min    = isset( $args['min'] ) ? $args['min'] : 0;
-		$step   = isset( $args['step'] ) ? $args['step'] : 1;
-		$size   = ( isset( $args['size'] ) && ! is_null( $args['size'] ) ) ? $args['size'] : 'regular';
+		$name     = ' name="' . $this->func . '_settings[' . $args['id'] . ']"';
+		$max      = isset( $args['max'] ) ? $args['max'] : 999999;
+		$min      = isset( $args['min'] ) ? $args['min'] : 0;
+		$step     = isset( $args['step'] ) ? $args['step'] : 1;
+		$size     = ( isset( $args['size'] ) && ! is_null( $args['size'] ) ) ? $args['size'] : 'regular';
+		$readonly = $args['readonly'] === true ? ' readonly="readonly"' : '';
 
 		$html  = '<input type="number" step="' . esc_attr( $step ) . '" max="' . esc_attr( $max ) . '" min="' . esc_attr( $min ) . '" class="' . $size . '-text" id="' . $this->func . '_settings[' . $args['id'] . ']"' . $name . ' value="' . esc_attr( stripslashes( $value ) ) . '"' . $readonly . '/>&nbsp;';
-		$html .= '<label for="' . $this->func . '_settings[' . $args['id'] . ']">' . $args['desc'] . '</label>';
+		$html .= '<span class="description"><label for="' . $this->func . '_settings[' . $args['id'] . ']">' . $args['desc'] . '</label></span>';
 
 		echo $html;
 	}
@@ -764,7 +765,7 @@ class S214_Settings {
 		$size = ( isset( $args['size'] ) && ! is_null( $args['size'] ) ) ? $args['size'] : 'regular';
 
 		$html  = '<input type="password" class="' . $size . '-text" id="' . $this->func . '_settings[' . $args['id'] . ']" name="' . $this->func . '_settings[' . $args['id'] . ']" value="' . esc_attr( $value )  . '" />&nbsp;';
-		$html .= '<label for="' . $this->func . '_settings[' . $args['id'] . ']">' . $args['desc'] . '</label>';
+		$html .= '<span class="description"><label for="' . $this->func . '_settings[' . $args['id'] . ']">' . $args['desc'] . '</label></span>';
 
 		echo $html;
 	}
@@ -847,7 +848,7 @@ class S214_Settings {
 		}
 
 		$html .= '</select>&nbsp;';
-		$html .= '<label for="' . $this->func . '_settings[' . $args['id'] . ']">' . $args['desc'] . '</label>';
+		$html .= '<span class="description"><label for="' . $this->func . '_settings[' . $args['id'] . ']">' . $args['desc'] . '</label></span>';
 
 		echo $html;
 	}
@@ -875,7 +876,7 @@ class S214_Settings {
 		$size     = ( isset( $args['size'] ) && ! is_null( $args['size'] ) ) ? $args['size'] : 'regular';
 
 		$html  = '<input type="text" class="' . $size . '-text" id="' . $this->func . '_settings[' . $args['id'] . ']"' . $name . ' value="' . esc_attr( stripslashes( $value ) )  . '"' . $readonly . '/>&nbsp;';
-		$html .= '<label for="' . $this->func . '_settings[' . $args['id'] . ']">' . $args['desc'] . '</label>';
+		$html .= '<span class="description"><label for="' . $this->func . '_settings[' . $args['id'] . ']">' . $args['desc'] . '</label></span>';
 
 		echo $html;
 	}
@@ -899,7 +900,7 @@ class S214_Settings {
 		}
 
 		$html  = '<textarea class="large-text" cols="50" rows="5" id="' . $this->func . '_settings[' . $args['id'] . ']" name="' . $this->func . '_settings[' . $args['id'] . ']">' . esc_textarea( stripslashes( $value ) ) . '</textarea>&nbsp;';
-		$html .= '<label for="' . $this->func . '_settings[' . $args['id'] . ']">' . $args['desc'] . '</label>';
+		$html .= '<span class="description"><label for="' . $this->func . '_settings[' . $args['id'] . ']">' . $args['desc'] . '</label></span>';
 
 		echo $html;
 	}
@@ -926,7 +927,40 @@ class S214_Settings {
 
 		$html  = '<input type="text" class="' . $size . '-text" id="' . $this->func . '_settings[' . $args['id'] . ']" name="' . $this->func . '_settings[' . $args['id'] . ']" value="' . esc_attr( stripslashes( $value ) ) . '" />&nbsp;';
 		$html .= '<span><input type="button" class="' . $this->func . '_settings_upload_button button-secondary" value="' . __( 'Upload File', 's214-settings' ) . '" /></span>&nbsp;';
-		$html .= '<label for="' . $this->func . '_settings[' . $args['id'] . ']">' . $args['desc'] . '</label>';
+		$html .= '<span class="description"><label for="' . $this->func . '_settings[' . $args['id'] . ']">' . $args['desc'] . '</label></span>';
+
+		echo $html;
+	}
+
+
+	/**
+	 * License field callback
+	 *
+	 * @access      public
+	 * @since       1.0.0
+	 * @param       array $args Arguments passed by the setting
+	 * @global      array ${$this->func . '_options'} The Beacon options
+	 * @return      void
+	 */
+	public function license_key_callback( $args ) {
+		global ${$this->func . '_options'};
+
+		if( isset( ${$this->func . '_options'}[$args['id']] ) ) {
+			$value = ${$this->func . '_options'}[$args['id']];
+		} else {
+			$value = isset( $args['std'] ) ? $args['std'] : '';
+		}
+
+		$size = ( isset( $args['size'] ) && ! is_null( $args['size'] ) ) ? $args['size'] : 'regular';
+
+		$html = '<input type="text" class="' . $size . '-text" id="' . $this->func . '_settings[' . $args['id'] . ']" name="' . $this->func . '_settings[' . $args['id'] . ']" value="' . esc_attr( $value ) . '" />&nbsp;';
+
+		if( get_option( $args['options']['is_valid_license_option'] ) ) {
+			$html .= '<input type="submit" class="button-secondary" name="' . $args['id'] . '_deactivate" value="' . __( 'Deactivate License',  's214-settings' ) . '"/>';
+		}
+		$html .= '<span class="description"><label for="' . $this->func . '_settings[' . $args['id'] . ']"> '  . $args['desc'] . '</label></span>';
+
+		wp_nonce_field( $args['id'] . '-nonce', $args['id'] . '-nonce' );
 
 		echo $html;
 	}
