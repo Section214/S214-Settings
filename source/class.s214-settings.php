@@ -111,13 +111,14 @@ class S214_Settings {
 			'page_title'	=> __( 'Section214 Settings', 's214' ),
 			'menu_title'    => __( 'Section214 Settings', 's214' ),
 			'capability'    => 'manage_options',
+			'icon'          => '',
 			'position'      => null
 		) );
 
 		if( $menu['type'] == 'submenu' ) {
 			${$this->func . '_settings_page'} = add_submenu_page( $menu['parent'], $menu['page_title'], $menu['menu_title'], $menu['capability'], $this->slug . '-settings', array( $this, 'render_settings_page' ) );
 		} else {
-			${$this->func . '_settings_page'} = add_menu_page( $menu['page_title'], $menu['menu_title'], $menu['capability'], $this->slug . '-settings', array( $this, 'render_settings_page' ), '', $menu['position'] );
+			${$this->func . '_settings_page'} = add_menu_page( $menu['page_title'], $menu['menu_title'], $menu['capability'], $this->slug . '-settings', array( $this, 'render_settings_page' ), $menu['icon'], $menu['position'] );
 		}
 	}
 
