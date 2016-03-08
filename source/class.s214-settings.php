@@ -3,7 +3,7 @@
  * Section214 Settings Class
  *
  * @package     S214\Settings
- * @since       1.0.1
+ * @since       1.0.2
  */
 
 
