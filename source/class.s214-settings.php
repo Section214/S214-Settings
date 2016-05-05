@@ -3,7 +3,7 @@
  * Section214 Settings Class
  *
  * @package     S214\Settings
- * @since       1.0.2
+ * @since       1.0.3
  */
 
 
@@ -25,7 +25,7 @@ class S214_Settings {
 	 * @var         string $version The settings class version
 	 * @since       1.0.0
 	 */
-	private $version = '1.0.2';
+	private $version = '1.0.3';
 
 
 	/**
