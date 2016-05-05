@@ -19,7 +19,7 @@ $settings = new S214_Settings( 'your-plugin', 'general' );
 $your_plugin_options = $settings->get_settings();
 ```
 
-The S214_Settings class takes two arguments. The first, is the slug of your project. The second is the slug of the tab we want to load by default on the settings page. More on settings tabs in a moment.
+The S214_Settings class takes two arguments. The first is the slug of your project. The second is the slug of the tab we want to load by default on the settings page. More on settings tabs in a moment.
 
 At this point, we now have a global `$your_plugin_options` containing an array of the available options for your plugin. Of course, we haven't defined and options, so right now it's just a blank array... not very useful!
 
@@ -46,8 +46,10 @@ function your_plugin_add_menu( $menu ) {
   $menu['type']       = 'submenu';                                    // Can be set to 'submenu' or 'menu'. Defaults to 'menu'.
   $menu['parent']     = 'options-general.php';                        // If 'type' is set to 'submenu', defines the parent menu to place our menu under. Defaults to 'options-general.php'
   $menu['page_title'] = __( 'Your Plugin Settings', 'your-plugin' );  // The page title. Defaults to 'Section214 Settings'.
+  $menu['show_title'] = false;                                        // Whether or not to display the title at the top of the page.
   $menu['menu_title'] = __( 'Your Plugin', 'your-plugin' );           // The menu title. Defaults to 'Section214 Settings'.
   $menu['capability'] = 'manage_options';                             // The minimum capability required to access the settings panel. Defaults to 'manage_options'.
+  $menu['icon']       = '';                                           // An (optional) icon for your menu item. Follows the same standards as the add_menu_item() function in WordPress.
   $menu['position']   = null;                                         // Where in the menu to display our new menu. Defaults to 'null' (bottom of the menu).
 
   return $menu;
@@ -70,9 +72,11 @@ function your_plugin_settings_tabs( $tabs ) {
 add_filter( 'your_plugin_settings_tabs', 'your_plugin_settings_tabs' );
 ```
 
-Again, pretty simple. You can add as many tabs as you want through this filter, though add too many and it might start to look a bit odd!
+Again, pretty simple. You can add as many tabs as you want through this filter, though if you add too many it might start to look a bit odd!
 
-Starting with version 1.0.1, we now support settings sections. This allows you to create sub-tabs in each main tab. This can be accomplished like so...
+### Adding Settings Sections
+
+Settings sections allow you to create sub-sections in each main tab. This can be accomplished like so...
 
 ```
 function your_plugin_settings_sections( $sections ) {
