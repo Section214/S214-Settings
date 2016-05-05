@@ -135,4 +135,4 @@ For the moment, we're going to assume that when you instantiated the settings cl
 
 The `get_option()` method takes two arguments: `key` and `default`. The first argument, key, is mandatory. This is the ID of the setting we want to retrieve. The second arguement is optional and specifies a default value to return if the specified key isn't saved.
 
-That's it! You're all set! Don't forget to read the [settings reference](https://github.com/Section214/S214-Settings/blob/master/settings.md) for further info storing and working with settings!
+That's it! You're all set! Don't forget to read the [settings reference](https://github.com/Section214/S214-Settings/wiki/Settings-Methods) for further info storing and working with settings!
