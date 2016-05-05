@@ -50,6 +50,13 @@ class S214_Settings {
 
 
 	/**
+	 * @var         string $page_title The page title
+	 * @since       1.0.3
+	 */
+	private $page_title;
+
+
+	/**
 	 * Get things started
 	 *
 	 * @access      public
@@ -115,6 +122,8 @@ class S214_Settings {
 			'position'      => null
 		) );
 
+		$this->page_title = ( isset( $menu['page_title'] ) ? $menu['page_title'] : false );
+
 		if( $menu['type'] == 'submenu' ) {
 			${$this->func . '_settings_page'} = add_submenu_page( $menu['parent'], $menu['page_title'], $menu['menu_title'], $menu['capability'], $this->slug . '-settings', array( $this, 'render_settings_page' ) );
 		} else {
@@ -144,6 +153,9 @@ class S214_Settings {
 		ob_start();
 		?>
 		<div class="wrap">
+			<?php if( $this->page_title ) { ?>
+				<h2><?php echo $this->page_title; ?></h2>
+			<?php } ?>
 			<h2 class="nav-tab-wrapper">
 				<?php
 				foreach( $this->get_settings_tabs() as $tab_id => $tab_name ) {
@@ -493,9 +505,14 @@ class S214_Settings {
 
 		$settings   = $this->get_registered_settings();
 		$tab        = isset( $referrer['tab'] ) ? $referrer['tab'] : $this->default_tab;
+		$section    = isset( $referrer['section'] ) ? $referrer['section'] : 'main';
 
 		$input = $input ? $input : array();
-		$input = apply_filters( $this->func . '_settings_' . $tab . '_sanitize', $input );
+		$input = apply_filters( $this->func . '_settings_' . $tab . '-' . $section . '_sanitize', $input );
+
+		if( $section === 'main' ) {
+			$input = apply_filters( $this->func . '_settings_' . $tab . '_sanitize', $input );
+		}
 
 		foreach( $input as $key => $value ) {
 			$type = isset( $settings[$tab][$key]['type'] ) ? $settings[$tab][$key]['type'] : false;
@@ -509,8 +526,12 @@ class S214_Settings {
 			$input[$key] = apply_filters( $this->func . '_settings_sanitize', $input[$key], $key );
 		}
 
-		if( ! empty( $settings[$tab] ) ) {
-			foreach( $settings[$tab] as $key => $value ) {
+		$main_settings    = $section == 'main' ? $settings[$tab] : array();
+		$section_settings = ! empty( $settings[$tab][$section] ) ? $settings[$tab][$section] : array();
+		$found_settings   = array_merge( $main_settings, $section_settings );
+
+		if( ! empty( $found_settings ) ) {
+			foreach( $found_settings as $key => $value ) {
 				if( is_numeric( $key ) ) {
 					$key = $value['id'];
 				}
