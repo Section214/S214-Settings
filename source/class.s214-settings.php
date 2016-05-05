@@ -1054,6 +1054,7 @@ class S214_Settings {
 		$suffix     = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 		$ui_style   = ( get_user_option( 'admin_color' ) == 'classic' ) ? 'classic' : 'fresh';
 		$url_path   = str_replace( WP_CONTENT_DIR, WP_CONTENT_URL, dirname( __FILE__ ) );
+		$cm_cdn     = 'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.14.2/';
 
 		wp_enqueue_style( 'wp-color-picker' );
 		wp_enqueue_script( 'wp-color-picker' );
@@ -1065,12 +1066,14 @@ class S214_Settings {
 		wp_enqueue_style( 'select2', '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/css/select2.min.css', array(), '4.0.2' );
 		wp_enqueue_script( 'select2', '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/js/select2.min.js', array( 'jquery' ), '4.0.0' );
 
-		wp_enqueue_style( $this->slug . '-cm', $url_path . '/assets/js/codemirror/lib/codemirror.css', array(), '5.10' );
-		wp_enqueue_script( $this->slug . '-cm', $url_path . '/assets/js/codemirror/lib/codemirror.js', array( 'jquery' ), '5.10' );
-		wp_enqueue_script( $this->slug . '-cm-html', $url_path . '/assets/js/codemirror/mode/htmlmixed/htmlmixed.js', array( 'jquery', $this->slug . '-cm' ), '5.10' );
-		wp_enqueue_script( $this->slug . '-cm-xml', $url_path . '/assets/js/codemirror/mode/xml/xml.js', array( 'jquery', $this->slug . '-cm' ), '5.10' );
-		wp_enqueue_script( $this->slug . '-cm-js', $url_path . '/assets/js/codemirror/mode/javascript/javascript.js', array( 'jquery', $this->slug . '-cm' ), '5.10' );
-		wp_enqueue_script( $this->slug . '-cm-css', $url_path . '/assets/js/codemirror/mode/css/css.js', array( 'jquery', $this->slug . '-cm' ), '5.10' );
+		wp_enqueue_style( $this->slug . '-cm', $cm_cdn . 'codemirror.css', array(), '5.10' );
+		wp_enqueue_script( $this->slug . '-cm', $cm_cdn . 'codemirror.js', array( 'jquery' ), '5.14.2' );
+		wp_enqueue_script( $this->slug . '-cm-html', $cm_cdn . 'mode/htmlmixed/htmlmixed.js', array( 'jquery', $this->slug . '-cm' ), '5.14.2' );
+		wp_enqueue_script( $this->slug . '-cm-xml', $cm_cdn . 'mode/xml/xml.js', array( 'jquery', $this->slug . '-cm' ), '5.14.2' );
+		wp_enqueue_script( $this->slug . '-cm-js', $cm_cdn . 'mode/javascript/javascript.js', array( 'jquery', $this->slug . '-cm' ), '5.14.2' );
+		wp_enqueue_script( $this->slug . '-cm-css', $cm_cdn . 'mode/css/css.js', array( 'jquery', $this->slug . '-cm' ), '5.14.2' );
+		wp_enqueue_script( $this->slug . '-cm-php', $cm_cdn . 'mode/php/php.js', array( 'jquery', $this->slug . '-cm' ), '5.14.2' );
+		wp_enqueue_script( $this->slug . '-cm-clike', $cm_cdn . 'mode/clike/clike.js', array( 'jquery', $this->slug . '-cm' ), '5.14.2' );
 
 		wp_enqueue_style( $this->slug, $url_path . '/assets/css/admin' . $suffix . '.css', array(), $this->version );
 		wp_enqueue_script( $this->slug, $url_path . '/assets/js/admin' . $suffix . '.js', array( 'jquery' ), $this->version );
