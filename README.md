@@ -88,7 +88,7 @@ function your_plugin_settings_sections( $sections ) {
 
 	return $sections;
 }
-add_filter( 'your_plugin_settings_sections', 'your_plugin_settings_sections' );
+add_filter( 'your_plugin_registered_settings_sections', 'your_plugin_settings_sections' );
 ```
 
 Sections are completely optional, but they do make it easier to sort though a lot of settings!
@@ -121,7 +121,7 @@ add_filter( 'your_plugin_registered_settings', 'your_plugin_settings' );
 
 With this simple configuration, you should now have a settings page that looks like this:
 
-![](http://cloud.section214.com/image/0y3K0C3H0b0V/Image%202015-10-20%20at%201.38.16%20AM.png)
+![](http://section214.com/wp-content/uploads/2016/05/Screen-Shot-2016-05-04-at-11.15.21-PM.png)
 
 Breaking down the settings array, you can see that it is a multi-dimensional array where each settings tab is a multi-dimensional array, and each setting is an array.
 
@@ -133,6 +133,6 @@ For the moment, we're going to assume that when you instantiated the settings cl
 
 `$settings->get_option( 'your_first_setting' );`
 
-The `get_option()` method takes two arguments: `key` and `default`. The first arguement, key, is mandatory. This is the ID of the setting we want to retrieve. The second arguement is optional and specifies a default value to return if the specified key isn't saved.
+The `get_option()` method takes two arguments: `key` and `default`. The first argument, key, is mandatory. This is the ID of the setting we want to retrieve. The second arguement is optional and specifies a default value to return if the specified key isn't saved.
 
 That's it! You're all set! Don't forget to read the [settings reference](https://github.com/Section214/S214-Settings/blob/master/settings.md) for further info storing and working with settings!
