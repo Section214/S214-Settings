@@ -1062,8 +1062,8 @@ class S214_Settings {
 		wp_enqueue_script( 'media-upload' );
 		wp_enqueue_style( 'thickbox' );
 		wp_enqueue_script( 'thickbox' );
-		wp_enqueue_style( 'select2', '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css', array(), '4.0.0' );
-		wp_enqueue_script( 'select2', '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js', array( 'jquery' ), '4.0.0' );
+		wp_enqueue_style( 'select2', '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/css/select2.min.css', array(), '4.0.2' );
+		wp_enqueue_script( 'select2', '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/js/select2.min.js', array( 'jquery' ), '4.0.0' );
 
 		wp_enqueue_style( $this->slug . '-cm', $url_path . '/assets/js/codemirror/lib/codemirror.css', array(), '5.10' );
 		wp_enqueue_script( $this->slug . '-cm', $url_path . '/assets/js/codemirror/lib/codemirror.js', array( 'jquery' ), '5.10' );
