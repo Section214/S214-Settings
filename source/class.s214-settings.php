@@ -539,7 +539,7 @@ class S214_Settings {
 	 * @return      string $input The sanitized value
 	 */
 	public function sanitize_text_field( $input ) {
-		return trim( $input );
+		return trim( wp_strip_all_tags( $input, true ) );
 	}
 
 
