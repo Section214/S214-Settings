@@ -1051,10 +1051,11 @@ class S214_Settings {
 		}
 
 		// Use minified libraries if SCRIPT_DEBUG is turned off
-		$suffix     = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
-		$ui_style   = ( get_user_option( 'admin_color' ) == 'classic' ) ? 'classic' : 'fresh';
-		$url_path   = str_replace( WP_CONTENT_DIR, WP_CONTENT_URL, dirname( __FILE__ ) );
-		$cm_cdn     = 'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.14.2/';
+		$suffix      = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+		$ui_style    = ( get_user_option( 'admin_color' ) == 'classic' ) ? 'classic' : 'fresh';
+		$url_path    = str_replace( WP_CONTENT_DIR, WP_CONTENT_URL, dirname( __FILE__ ) );
+		$select2_cdn = 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/';
+		$cm_cdn      = 'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.14.2/';
 
 		wp_enqueue_style( 'wp-color-picker' );
 		wp_enqueue_script( 'wp-color-picker' );
@@ -1063,8 +1064,8 @@ class S214_Settings {
 		wp_enqueue_script( 'media-upload' );
 		wp_enqueue_style( 'thickbox' );
 		wp_enqueue_script( 'thickbox' );
-		wp_enqueue_style( 'select2', '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/css/select2.min.css', array(), '4.0.2' );
-		wp_enqueue_script( 'select2', '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/js/select2.min.js', array( 'jquery' ), '4.0.0' );
+		wp_enqueue_style( 'select2', $select2_cdn . 'css/select2.min.css', array(), '4.0.2' );
+		wp_enqueue_script( 'select2', $select2_cdn . 'js/select2.min.js', array( 'jquery' ), '4.0.2' );
 
 		wp_enqueue_style( $this->slug . '-cm', $cm_cdn . 'codemirror.css', array(), '5.10' );
 		wp_enqueue_script( $this->slug . '-cm', $cm_cdn . 'codemirror.js', array( 'jquery' ), '5.14.2' );

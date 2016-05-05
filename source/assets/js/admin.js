@@ -1,4 +1,4 @@
-/*global jQuery, document, window, wp, _wpMediaViewsL10n, file_frame, s214_settings_vars*/
+/*global jQuery, document, window, wp, _wpMediaViewsL10n, file_frame, CodeMirror, s214_settings_vars*/
 jQuery(document).ready(function ($) {
     'use strict';
 
@@ -25,7 +25,7 @@ jQuery(document).ready(function ($) {
 
     // Setup CodeMirror
     if ($('.s214-html').length) {
-        $('.s214-html').each(function(index, elem) {
+        $('.s214-html').each(function (index, elem) {
             CodeMirror.fromTextArea(elem, {
                 lineNumbers: true,
                 mode: 'text/html',
@@ -36,6 +36,8 @@ jQuery(document).ready(function ($) {
 
     // Setup uploaders
     if ($('.' + s214_settings_vars.func + '_settings_upload_button').length) {
+        var file_frame;
+
         $('body').on('click', '.' + s214_settings_vars.func + '_settings_upload_button', function (e) {
             e.preventDefault();
 
@@ -50,7 +52,7 @@ jQuery(document).ready(function ($) {
             }
 
             // Create the media frame
-            file_frame = wp.media.frames.file_frame = wp.media({
+            wp.media.frames.file_frame = wp.media({
                 frame: 'post',
                 state: 'insert',
                 title: button.data('uploader_title'),
@@ -59,6 +61,8 @@ jQuery(document).ready(function ($) {
                 },
                 multiple: false
             });
+
+            file_frame = wp.media.frames.file_frame;
 
             file_frame.on('menu:render:default', function (view) {
                 // Store our views in an object
@@ -88,7 +92,6 @@ jQuery(document).ready(function ($) {
             file_frame.open();
         });
 
-        var file_frame;
         window.formfield = '';
     }
 });
