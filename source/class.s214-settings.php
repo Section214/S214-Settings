@@ -1058,7 +1058,7 @@ class S214_Settings {
 		wp_enqueue_style( 'wp-color-picker' );
 		wp_enqueue_script( 'wp-color-picker' );
 		wp_enqueue_media();
-		wp_enqueue_style( 'jquery-ui-css', $url_path . '/assets/css/jquery-ui-' . $ui_style . $suffix . '.css' );
+		wp_enqueue_style( 'jquery-ui-css', $url_path . '/assets/css/jquery-ui-' . $ui_style . '.min.css' );
 		wp_enqueue_script( 'media-upload' );
 		wp_enqueue_style( 'thickbox' );
 		wp_enqueue_script( 'thickbox' );
