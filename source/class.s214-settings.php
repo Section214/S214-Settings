@@ -50,10 +50,10 @@ class S214_Settings {
 
 
 	/**
-	 * @var         string $page_title The page title
+	 * @var         bool $show_title Whether or not to display the page title
 	 * @since       1.0.3
 	 */
-	private $page_title;
+	private $show_title;
 
 
 	/**
@@ -116,13 +116,14 @@ class S214_Settings {
 			'type'          => 'menu',
 			'parent'        => 'options-general.php',
 			'page_title'	=> __( 'Section214 Settings', 's214' ),
+			'show_title'    => false,
 			'menu_title'    => __( 'Section214 Settings', 's214' ),
 			'capability'    => 'manage_options',
 			'icon'          => '',
 			'position'      => null
 		) );
 
-		$this->page_title = ( isset( $menu['page_title'] ) ? $menu['page_title'] : false );
+		$this->show_title = $menu['show_title'];
 
 		if( $menu['type'] == 'submenu' ) {
 			${$this->func . '_settings_page'} = add_submenu_page( $menu['parent'], $menu['page_title'], $menu['menu_title'], $menu['capability'], $this->slug . '-settings', array( $this, 'render_settings_page' ) );
@@ -153,7 +154,7 @@ class S214_Settings {
 		ob_start();
 		?>
 		<div class="wrap">
-			<?php if( $this->page_title ) { ?>
+			<?php if( $this->show_title ) { ?>
 				<h2><?php echo $this->page_title; ?></h2>
 			<?php } ?>
 			<h2 class="nav-tab-wrapper">
