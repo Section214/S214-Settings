@@ -16,7 +16,7 @@ More information can be found on the [wiki](https://github.com/Section214/S214-S
 
 This will download the latest developer copy of the S214 Settings library.
 
-You can also download a copy of the latest stable distributable [here](https://github.com/Section214/S214-Settings/dist/latest.zip).
+You can also download a copy of the latest stable distributable [here](https://github.com/Section214/S214-Settings/blob/master/dist/latest.zip?raw=true).
 
 ## Bugs
 
