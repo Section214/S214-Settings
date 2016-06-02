@@ -1,6 +1,6 @@
 # S214 Settings Library
-[![Latest Release](https://img.shields.io/badge/dev-1.0.3-red.svg)](https://github.com/Section214/S214-Settings/releases/latest)
-[![Latest Release](https://img.shields.io/badge/dist-1.0.3-blue.svg)](https://github.com/Section214/S214-Settings/blob/master/dist/latest.zip?raw=true)
+[![Latest Release](https://img.shields.io/badge/dev-1.0.4-red.svg)](https://github.com/Section214/S214-Settings/releases/latest)
+[![Latest Release](https://img.shields.io/badge/dist-1.0.4-blue.svg)](https://github.com/Section214/S214-Settings/blob/master/dist/latest.zip?raw=true)
 [![License](https://img.shields.io/badge/license-GPL--2.0%2B-green.svg)](https://github.com/Section214/S214-Settings/blob/master/license.txt)
 
 ## What Is This?
