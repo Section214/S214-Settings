@@ -57,6 +57,13 @@ class S214_Settings {
 
 
 	/**
+	 * @var         object $sysinfo The sysinfo object
+	 * @since       1.1.0
+	 */
+	private $sysinfo;
+
+
+	/**
 	 * Get things started
 	 *
 	 * @access      public
@@ -78,6 +85,12 @@ class S214_Settings {
 
 		// Run action and filter hooks
 		$this->hooks();
+
+		// Setup the Sysinfo class
+		if( ! class_exists( 'S214_Sysinfo' ) ) {
+			require_once 'modules/sysinfo/class.s214-sysinfo.php';
+		}
+		$this->sysinfo = new S214_Sysinfo( $this->slug, $this->func, $this->version );
 	}
 
 
@@ -98,6 +111,9 @@ class S214_Settings {
 
 		// Add styles and scripts
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ), 100 );
+
+		// Process actions
+		add_action( 'admin_init', array( $this, 'process_actions' ) );
 	}
 
 
@@ -475,7 +491,8 @@ class S214_Settings {
 							'readonly'      => isset( $option['readonly'] )     ? $option['readonly']       : false,
 							'buttons'       => isset( $option['buttons'] )      ? $option['buttons']        : null,
 							'wpautop'       => isset( $option['wpautop'] )      ? $option['wpautop']        : null,
-							'teeny'         => isset( $option['teeny'] )        ? $option['teeny']          : null
+							'teeny'         => isset( $option['teeny'] )        ? $option['teeny']          : null,
+							'tab'           => isset( $option['tab'] )          ? $option['tab']            : null
 						)
 					);
 				}
@@ -878,6 +895,28 @@ class S214_Settings {
 
 
 	/**
+	 * Sysinfo callback
+	 *
+	 * @since       1.1.0
+	 * @param       array $args Arguements passed by the settings
+	 * @return      void
+	 */
+	public function sysinfo_callback( $args ) {
+		global ${$this->func . '_options'};
+
+		if( ! isset( ${$this->func . '_options'}[$args['tab']] ) || ( isset( ${$this->func . '_options'}[$args['tab']] ) && isset( $_GET['tab'] ) && $_GET['tab'] == ${$this->func . '_options'}[$args['tab']] ) ) {
+	        $html  = '<textarea readonly="readonly" onclick="this.focus(); this.select()" id="system-info-textarea" name="' . $this->func . '-system-info" title="' . __( 'To copy the system info, click below then press Ctrl + C (PC) or Cmd + C (Mac).', 's214-settings' ) . '">' . $this->sysinfo->get_system_info() . '</textarea>';
+	        $html .= '<p class="submit">';
+	        $html .= '<input type="hidden" name="' . $this->slug . '-settings-action" value="download_system_info" />';
+	        $html .= '<a class="button button-primary" href="' . add_query_arg( $this->slug . '-settings-action', 'download_system_info' ) . '">' . __( 'Download System Info File', 's214-settings' ) . '</a>';
+	        $html .= '</p>';
+
+	        echo $html;
+	    }
+    }
+
+
+	/**
 	 * Text callback
 	 *
 	 * @since       1.0.0
@@ -1035,6 +1074,23 @@ class S214_Settings {
 	    return (bool) apply_filters( $this->func . 'load_scripts', $ret );
 	}
 
+
+	/**
+	 * Processes all actions sent via POST and GET by looking for the '$func-settings-action'
+	 * request and running do_action() to call the function
+	 *
+	 * @since       1.1.0
+	 * @return      void
+	 */
+	function process_actions() {
+	    if( isset( $_POST[$this->slug . '-settings-action'] ) ) {
+	        do_action( $this->func . '_settings_' . $_POST[$this->slug . '-settings-action'], $_POST );
+	    }
+
+	    if( isset( $_GET[$this->slug . '-settings-action'] ) ) {
+	        do_action( $this->func . '_settings_' . $_GET[$this->slug . '-settings-action'], $_GET );
+	    }
+	}
 
 
 	/**
