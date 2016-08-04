@@ -520,57 +520,100 @@ class S214_Settings {
     public function settings_sanitize( $input = array() ) {
         global ${$this->func . '_options'};
 
-        if( empty( $_POST['_wp_http_referer'] ) ) {
-            return $input;
+        $doing_section = false;
+
+        if( ! empty( $_POST['_wp_http_referer'] ) ) {
+            $doing_section = true;
         }
 
-        parse_str( $_POST['_wp_http_referer'], $referrer );
+        $setting_types = $this->get_registered_settings_types();
+        $input         = $input ? $input : array();
 
-        $settings   = $this->get_registered_settings();
-        $tab        = isset( $referrer['tab'] ) ? $referrer['tab'] : $this->default_tab;
-        $section    = isset( $referrer['section'] ) ? $referrer['section'] : 'main';
+        //$settings   = $this->get_registered_settings();
 
-        $input = $input ? $input : array();
-        $input = apply_filters( $this->func . '_settings_' . $tab . '-' . $section . '_sanitize', $input );
+        if( $doing_section ) {
+        	parse_str( $_POST['_wp_http_referer'], $referrer );
+        	$tab        = isset( $referrer['tab'] ) ? $referrer['tab'] : $this->default_tab;
+        	$section    = isset( $referrer['section'] ) ? $referrer['section'] : 'main';
 
-        if( $section === 'main' ) {
-            $input = apply_filters( $this->func . '_settings_' . $tab . '_sanitize', $input );
+        	$input = apply_filters( $this->func . '_settings_' . $tab . '_sanitize', $input );
+            $input = apply_filters( $this->func . '_settings_' . $tab . '-' . $section . '_sanitize', $input );
         }
 
-        foreach( $input as $key => $value ) {
-            $type = isset( $settings[$tab][$key]['type'] ) ? $settings[$tab][$key]['type'] : false;
+        $output = array_merge( ${$this->func . '_options'}, $input );
 
-            if( $type ) {
-                // Field type specific filter
-                $input[$key] = apply_filters( $this->func . '_settings_sanitize_' . $type, $value, $key );
-            }
+        foreach( $setting_types as $key => $type ) {
+        	if( empty( $type ) ) {
+        		continue;
+        	}
 
-            // General filter
-            $input[$key] = apply_filters( $this->func . '_settings_sanitize', $input[$key], $key );
+        	// Bypass non-setting settings
+        	$non_setting_types = apply_filters( $this->func . '_non_setting_types', array(
+        		'header', 'descriptive_text', 'hook'
+        	) );
+
+        	if( in_array( $type, $non_setting_types ) ) {
+        		continue;
+        	}
+
+        	if( array_key_exists( $key, $output ) ) {
+        		$output[$key] = apply_filters( $this->func . '_settings_sanitize_' . $type, $output[$key], $key );
+        		$output[$key] = apply_filters( $this->func . '_settings_sanitize', $output[$key], $key );
+        	}
+
+        	if( $doing_section ) {
+        		switch( $type ) {
+        			case 'checkbox':
+        				if( array_key_exists( $key, $input ) && $output[$key] === '-1' ) {
+        					unset( $output[$key] );
+        				}
+        				break;
+        			default:
+        				if( array_key_exists( $key, $input ) && empty( $input[$key] ) ) {
+        					unset( $output[$key] );
+        				}
+        				break;
+        		}
+        	} else {
+        		if( empty( $input[$key] ) ) {
+        			unset( $output[$key] );
+        		}
+        	}
         }
 
-        $main_settings    = $section == 'main' ? $settings[$tab] : array();
-        $section_settings = ! empty( $settings[$tab][$section] ) ? $settings[$tab][$section] : array();
-        $found_settings   = array_merge( $main_settings, $section_settings );
-
-        if( ! empty( $found_settings ) ) {
-            foreach( $found_settings as $key => $value ) {
-                if( is_numeric( $key ) ) {
-                    $key = $value['id'];
-                }
-
-                if( empty( $input[$key] ) || ! isset( $input[$key] ) ) {
-                    unset( ${$this->func . '_options'}[$key] );
-                }
-            }
+        if( $doing_section ) {
+        	add_settings_error( $this->slug . '-notices', '', __( 'Settings updated.', 's214-settings' ), 'updated' );
         }
 
-        // Merge our new settings with the existing
-        $input = array_merge( ${$this->func . '_options'}, $input );
+        return $output;
+    }
 
-        add_settings_error( $this->slug . '-notices', '', __( 'Settings updated.', 's214-settings' ), 'updated' );
 
-        return $input;
+    /**
+	 * Flattens the set of registered settings and their type so we can easily sanitize all settings
+	 *
+	 * @since       1.2.0
+	 * @return      array Key is the setting ID, value is the type of setting it is registered as
+	 */
+    function get_registered_settings_types() {
+	    $settings      = $this->get_registered_settings();
+	    $setting_types = array();
+
+	    foreach( $settings as $tab ) {
+		    foreach( $tab as $section_or_setting ) {
+			    // See if we have a setting registered at the tab level for backwards compatibility
+			    if( is_array( $section_or_setting ) && array_key_exists( 'type', $section_or_setting ) ) {
+				    $setting_types[$section_or_setting['id']] = $section_or_setting['type'];
+				    continue;
+			    }
+
+			    foreach( $section_or_setting as $section => $section_settings ) {
+				    $setting_types[$section_settings['id']] = $section_settings['type'];
+			    }
+		    }
+	    }
+
+	    return $setting_types;
     }
 
 
@@ -615,7 +658,8 @@ class S214_Settings {
         $name    = ' name="' . $this->func . '_settings[' . $args['id'] . ']"';
         $checked = isset( ${$this->func . '_options'}[$args['id']] ) ? checked( 1, ${$this->func . '_options'}[$args['id']], false ) : '';
 
-        $html  = '<input type="checkbox" id="' . $this->func . '_settings[' . $args['id'] . ']"' . $name . ' value="1" ' . $checked . '/>&nbsp;';
+        $html  = '<input type="hidden"' . $name . ' value="-1" />';
+        $html .= '<input type="checkbox" id="' . $this->func . '_settings[' . $args['id'] . ']"' . $name . ' value="1" ' . $checked . '/>&nbsp;';
         $html .= '<span class="description"><label for="' . $this->func . '_settings[' . $args['id'] . ']">' . $args['desc'] . '</label></span>';
 
         echo apply_filters( 's214_after_setting_output', $html, $args );
