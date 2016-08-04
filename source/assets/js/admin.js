@@ -45,10 +45,10 @@ jQuery(document).ready(function ($) {
             collision: 'flipfit'
         },
         hide: {
-            duration: 500
+            duration: 200
         },
         show: {
-            duration: 500
+            duration: 200
         }
     });
 
