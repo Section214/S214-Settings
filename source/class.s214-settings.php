@@ -529,8 +529,6 @@ class S214_Settings {
         $setting_types = $this->get_registered_settings_types();
         $input         = $input ? $input : array();
 
-        //$settings   = $this->get_registered_settings();
-
         if( $doing_section ) {
         	parse_str( $_POST['_wp_http_referer'], $referrer );
         	$tab        = isset( $referrer['tab'] ) ? $referrer['tab'] : $this->default_tab;
@@ -1144,12 +1142,14 @@ class S214_Settings {
      * @return      void
      */
     function process_actions() {
-        if( isset( $_POST[$this->slug . '-settings-action'] ) ) {
-            do_action( $this->func . '_settings_' . $_POST[$this->slug . '-settings-action'], $_POST );
-        }
+    	if( ! isset( $_POST['submit'] ) ) {
+        	if( isset( $_POST[$this->slug . '-settings-action'] ) ) {
+            	do_action( $this->func . '_settings_' . $_POST[$this->slug . '-settings-action'], $_POST );
+        	}
 
-        if( isset( $_GET[$this->slug . '-settings-action'] ) ) {
-            do_action( $this->func . '_settings_' . $_GET[$this->slug . '-settings-action'], $_GET );
+        	if( isset( $_GET[$this->slug . '-settings-action'] ) ) {
+            	do_action( $this->func . '_settings_' . $_GET[$this->slug . '-settings-action'], $_GET );
+        	}
         }
     }
 
