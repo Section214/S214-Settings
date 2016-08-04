@@ -114,6 +114,9 @@ class S214_Settings {
 
         // Process actions
         add_action( 'admin_init', array( $this, 'process_actions' ) );
+
+        // Handle tooltips
+        add_filter( 's214_after_setting_output', array( $this, 'add_setting_tooltip' ), 10, 2 );
     }
 
 
@@ -475,24 +478,26 @@ class S214_Settings {
                         $this->func . '_settings_' . $tab . '_' . $section,
                         array(
                             'section'       => $section,
-                            'id'            => isset( $option['id'] )           ? $option['id']             : null,
-                            'desc'          => ! empty( $option['desc'] )       ? $option['desc']           : '',
-                            'name'          => isset( $option['name'] )         ? $option['name']           : null,
-                            'size'          => isset( $option['size'] )         ? $option['size']           : null,
-                            'options'       => isset( $option['options'] )      ? $option['options']        : '',
-                            'std'           => isset( $option['std'] )          ? $option['std']            : '',
-                            'min'           => isset( $option['min'] )          ? $option['min']            : null,
-                            'max'           => isset( $option['max'] )          ? $option['max']            : null,
-                            'step'          => isset( $option['step'] )         ? $option['step']           : null,
-                            'select2'       => isset( $option['select2'] )      ? $option['select2']        : null,
-                            'placeholder'   => isset( $option['placeholder'] )  ? $option['placeholder']    : null,
-                            'multiple'      => isset( $option['multiple'] )     ? $option['multiple']       : null,
-                            'allow_blank'   => isset( $option['allow_blank'] )  ? $option['allow_blank']    : true,
-                            'readonly'      => isset( $option['readonly'] )     ? $option['readonly']       : false,
-                            'buttons'       => isset( $option['buttons'] )      ? $option['buttons']        : null,
-                            'wpautop'       => isset( $option['wpautop'] )      ? $option['wpautop']        : null,
-                            'teeny'         => isset( $option['teeny'] )        ? $option['teeny']          : null,
-                            'tab'           => isset( $option['tab'] )          ? $option['tab']            : null
+                            'id'            => isset( $option['id'] )            ? $option['id']             : null,
+                            'desc'          => ! empty( $option['desc'] )        ? $option['desc']           : '',
+                            'name'          => isset( $option['name'] )          ? $option['name']           : null,
+                            'size'          => isset( $option['size'] )          ? $option['size']           : null,
+                            'options'       => isset( $option['options'] )       ? $option['options']        : '',
+                            'std'           => isset( $option['std'] )           ? $option['std']            : '',
+                            'min'           => isset( $option['min'] )           ? $option['min']            : null,
+                            'max'           => isset( $option['max'] )           ? $option['max']            : null,
+                            'step'          => isset( $option['step'] )          ? $option['step']           : null,
+                            'select2'       => isset( $option['select2'] )       ? $option['select2']        : null,
+                            'placeholder'   => isset( $option['placeholder'] )   ? $option['placeholder']    : null,
+                            'multiple'      => isset( $option['multiple'] )      ? $option['multiple']       : null,
+                            'allow_blank'   => isset( $option['allow_blank'] )   ? $option['allow_blank']    : true,
+                            'readonly'      => isset( $option['readonly'] )      ? $option['readonly']       : false,
+                            'buttons'       => isset( $option['buttons'] )       ? $option['buttons']        : null,
+                            'wpautop'       => isset( $option['wpautop'] )       ? $option['wpautop']        : null,
+                            'teeny'         => isset( $option['teeny'] )         ? $option['teeny']          : null,
+                            'tab'           => isset( $option['tab'] )           ? $option['tab']            : null,
+                            'tooltip_title' => isset( $option['tooltip_title'] ) ? $option['tooltip_title']  : false,
+                            'tooltip_desc'  => isset( $option['tooltip_desc'] )  ? $option['tooltip_desc']   : false
                         )
                     );
                 }
@@ -613,7 +618,7 @@ class S214_Settings {
         $html  = '<input type="checkbox" id="' . $this->func . '_settings[' . $args['id'] . ']"' . $name . ' value="1" ' . $checked . '/>&nbsp;';
         $html .= '<span class="description"><label for="' . $this->func . '_settings[' . $args['id'] . ']">' . $args['desc'] . '</label></span>';
 
-        echo $html;
+        echo apply_filters( 's214_after_setting_output', $html, $args );
     }
 
 
@@ -641,7 +646,7 @@ class S214_Settings {
         $html  = '<input type="text" class="s214-color-picker" id="' . $this->func . '_settings[' . $args['id'] . ']" name="' . $this->func . '_settings[' . $args['id'] . ']" value="' . esc_attr( $value ) . '" data-default-color="' . esc_attr( $default ) . '" />&nbsp;';
         $html .= '<span class="s214-color-picker-label description"><label for="' . $this->func . '_settings[' . $args['id'] . ']">' . $args['desc'] . '</label></span>';
 
-        echo $html;
+        echo apply_filters( 's214_after_setting_output', $html, $args );
     }
 
 
@@ -654,7 +659,9 @@ class S214_Settings {
      * @return      void
      */
     public function descriptive_text_callback( $args ) {
-        echo wp_kses_post( $args['desc'] );
+        $html = wp_kses_post( $args['desc'] );
+
+        echo apply_filters( 's214_after_setting_output', $html, $args );
     }
 
 
@@ -696,7 +703,9 @@ class S214_Settings {
                 'teeny'         => $teeny
             )
         );
-        echo '<br /><span class="description"><label for="' . $this->func . '_settings[' . $args['id'] . ']">' . $args['desc'] . '</label></span>';
+        $html = '<br /><span class="description"><label for="' . $this->func . '_settings[' . $args['id'] . ']">' . $args['desc'] . '</label></span>';
+
+        echo apply_filters( 's214_after_setting_output', $html, $args );
     }
 
 
@@ -720,7 +729,7 @@ class S214_Settings {
         $html  = '<textarea class="large-text s214-html" cols="50" rows="5" id="' . $this->func . '_settings[' . $args['id'] . ']" name="' . $this->func . '_settings[' . $args['id'] . ']">' . esc_textarea( stripslashes( $value ) ) . '</textarea>&nbsp;';
         $html .= '<span class="description"><label for="' . $this->func . '_settings[' . $args['id'] . ']">' . $args['desc'] . '</label></span>';
 
-        echo $html;
+        echo apply_filters( 's214_after_setting_output', $html, $args );
     }
 
 
@@ -737,6 +746,8 @@ class S214_Settings {
         global ${$this->func . '_options'};
 
         if( ! empty( $args['options'] ) ) {
+        	$html = '';
+
             foreach( $args['options'] as $key => $option ) {
                 if( isset( ${$this->func . '_options'}[$args['id']][$key] ) ) {
                     $enabled = $option;
@@ -744,10 +755,12 @@ class S214_Settings {
                     $enabled = isset( $args['std'][$key] ) ? $args['std'][$key] : NULL;
                 }
 
-                echo '<input name="' . $this->func . '_settings[' . $args['id'] . '][' . $key . ']" id="' . $this->func . '_settings[' . $args['id'] . '][' . $key . ']" type="checkbox" value="' . $option . '" ' . checked( $option, $enabled, false ) . ' />&nbsp;';
-                echo '<label for="' . $this->func . '_settings[' . $args['id'] . '][' . $key . ']">' . $option . '</label><br />';
+                $html .= '<input name="' . $this->func . '_settings[' . $args['id'] . '][' . $key . ']" id="' . $this->func . '_settings[' . $args['id'] . '][' . $key . ']" type="checkbox" value="' . $option . '" ' . checked( $option, $enabled, false ) . ' />&nbsp;';
+                $html .= '<label for="' . $this->func . '_settings[' . $args['id'] . '][' . $key . ']">' . $option . '</label><br />';
             }
-            echo '<p class="description">' . $args['desc'] . '</p>';
+            $html .= '<p class="description">' . $args['desc'] . '</p>';
+
+            echo apply_filters( 's214_after_setting_output', $html, $args );
         }
     }
 
@@ -780,7 +793,7 @@ class S214_Settings {
         $html  = '<input type="number" step="' . esc_attr( $step ) . '" max="' . esc_attr( $max ) . '" min="' . esc_attr( $min ) . '" class="' . $size . '-text" id="' . $this->func . '_settings[' . $args['id'] . ']"' . $name . ' value="' . esc_attr( stripslashes( $value ) ) . '"' . $readonly . '/>&nbsp;';
         $html .= '<span class="description"><label for="' . $this->func . '_settings[' . $args['id'] . ']">' . $args['desc'] . '</label></span>';
 
-        echo $html;
+        echo apply_filters( 's214_after_setting_output', $html, $args );
     }
 
 
@@ -807,7 +820,7 @@ class S214_Settings {
         $html  = '<input type="password" class="' . $size . '-text" id="' . $this->func . '_settings[' . $args['id'] . ']" name="' . $this->func . '_settings[' . $args['id'] . ']" value="' . esc_attr( $value )  . '" />&nbsp;';
         $html .= '<span class="description"><label for="' . $this->func . '_settings[' . $args['id'] . ']">' . $args['desc'] . '</label></span>';
 
-        echo $html;
+        echo apply_filters( 's214_after_setting_output', $html, $args );
     }
 
 
@@ -824,6 +837,8 @@ class S214_Settings {
         global ${$this->func . '_options'};
 
         if( ! empty( $args['options'] ) ) {
+        	$html = '';
+
             foreach( $args['options'] as $key => $option ) {
                 $checked = false;
 
@@ -833,11 +848,13 @@ class S214_Settings {
                     $checked = true;
                 }
 
-                echo '<input name="' . $this->func . '_settings[' . $args['id'] . ']" id="' . $this->func . '_settings[' . $args['id'] . '][' . $key . ']" type="radio" value="' . $key . '" ' . checked( true, $checked, false ) . '/>&nbsp;';
-                echo '<label for="' . $this->func . '_settings[' . $args['id'] . '][' . $key . ']">' . $option . '</label><br />';
+                $html .= '<input name="' . $this->func . '_settings[' . $args['id'] . ']" id="' . $this->func . '_settings[' . $args['id'] . '][' . $key . ']" type="radio" value="' . $key . '" ' . checked( true, $checked, false ) . '/>&nbsp;';
+                $html .= '<label for="' . $this->func . '_settings[' . $args['id'] . '][' . $key . ']">' . $option . '</label><br />';
             }
 
-            echo '<p class="description">' . $args['desc'] . '</p>';
+            $html .= '<p class="description">' . $args['desc'] . '</p>';
+
+            echo apply_filters( 's214_after_setting_output', $html, $args );
         }
     }
 
@@ -890,7 +907,7 @@ class S214_Settings {
         $html .= '</select>&nbsp;';
         $html .= '<span class="description"><label for="' . $this->func . '_settings[' . $args['id'] . ']">' . $args['desc'] . '</label></span>';
 
-        echo $html;
+        echo apply_filters( 's214_after_setting_output', $html, $args );
     }
 
 
@@ -911,7 +928,7 @@ class S214_Settings {
             $html .= '<a class="button button-primary" href="' . add_query_arg( $this->slug . '-settings-action', 'download_system_info' ) . '">' . __( 'Download System Info File', 's214-settings' ) . '</a>';
             $html .= '</p>';
 
-            echo $html;
+            echo apply_filters( 's214_after_setting_output', $html, $args );
         }
     }
 
@@ -940,7 +957,7 @@ class S214_Settings {
         $html  = '<input type="text" class="' . $size . '-text" id="' . $this->func . '_settings[' . $args['id'] . ']"' . $name . ' value="' . esc_attr( stripslashes( $value ) )  . '"' . $readonly . '/>&nbsp;';
         $html .= '<span class="description"><label for="' . $this->func . '_settings[' . $args['id'] . ']">' . $args['desc'] . '</label></span>';
 
-        echo $html;
+        echo apply_filters( 's214_after_setting_output', $html, $args );
     }
 
 
@@ -964,7 +981,7 @@ class S214_Settings {
         $html  = '<textarea class="large-text" cols="50" rows="5" id="' . $this->func . '_settings[' . $args['id'] . ']" name="' . $this->func . '_settings[' . $args['id'] . ']">' . esc_textarea( stripslashes( $value ) ) . '</textarea>&nbsp;';
         $html .= '<span class="description"><label for="' . $this->func . '_settings[' . $args['id'] . ']">' . $args['desc'] . '</label></span>';
 
-        echo $html;
+        echo apply_filters( 's214_after_setting_output', $html, $args );
     }
 
 
@@ -991,7 +1008,7 @@ class S214_Settings {
         $html .= '<span><input type="button" class="' . $this->func . '_settings_upload_button button-secondary" value="' . __( 'Upload File', 's214-settings' ) . '" /></span>&nbsp;';
         $html .= '<span class="description"><label for="' . $this->func . '_settings[' . $args['id'] . ']">' . $args['desc'] . '</label></span>';
 
-        echo $html;
+        echo apply_filters( 's214_after_setting_output', $html, $args );
     }
 
 
@@ -1024,7 +1041,7 @@ class S214_Settings {
 
         wp_nonce_field( $args['id'] . '-nonce', $args['id'] . '-nonce' );
 
-        echo $html;
+        echo apply_filters( 's214_after_setting_output', $html, $args );
     }
 
 
@@ -1115,6 +1132,7 @@ class S214_Settings {
 
         wp_enqueue_style( 'wp-color-picker' );
         wp_enqueue_script( 'wp-color-picker' );
+        wp_enqueue_script( 'jquery-ui-tooltip' );
         wp_enqueue_media();
         wp_enqueue_style( 'jquery-ui-css', $url_path . '/assets/css/jquery-ui-' . $ui_style . '.min.css' );
         wp_enqueue_script( 'media-upload' );
@@ -1139,5 +1157,24 @@ class S214_Settings {
             'image_media_button'    => __( 'Insert Image', 's214-settings' ),
             'image_media_title'     => __( 'Select Image', 's214-settings' ),
         ) ) );
+    }
+
+
+    /**
+     * Add tooltips
+     *
+     * @access      public
+     * @since       1.2.0
+     * @param       string $html The current field HTML
+     * @param       array $args Arguments passed to the field
+     * @return      string $html The updated field HTML
+     */
+    function add_setting_tooltip( $html, $args ) {
+        if( ! empty( $args['tooltip_title'] ) && ! empty( $args['tooltip_desc'] ) ) {
+            $tooltip = '<span alt="f223" class="s214-help-tip dashicons dashicons-editor-help" title="<strong>' . $args['tooltip_title'] . '</strong>: ' . $args['tooltip_desc'] . '"></span>';
+            $html .= $tooltip;
+        }
+
+        return $html;
     }
 }

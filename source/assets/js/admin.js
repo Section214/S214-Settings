@@ -34,6 +34,24 @@ jQuery(document).ready(function ($) {
         });
     }
 
+    // Setup tooltips
+    $('.s214-help-tip').tooltip({
+        content: function () {
+            return $(this).prop('title');
+        },
+        position: {
+            my: 'center top',
+            at: 'center bottom+10',
+            collision: 'flipfit'
+        },
+        hide: {
+            duration: 500
+        },
+        show: {
+            duration: 500
+        }
+    });
+
     // Setup uploaders
     if ($('.' + s214_settings_vars.func + '_settings_upload_button').length) {
         var file_frame;
