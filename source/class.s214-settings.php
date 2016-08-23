@@ -56,6 +56,13 @@ class S214_Settings {
 	private $show_title;
 
 
+    /**
+	 * @var         bool page_title The page title
+	 * @since       1.2.1
+	 */
+	private $page_title;
+
+
 	/**
 	 * @var         object $sysinfo The sysinfo object
 	 * @since       1.1.0
@@ -143,6 +150,7 @@ class S214_Settings {
 		) );
 
 		$this->show_title = $menu['show_title'];
+        $this->page_title = $menu['page_title'];
 
 		if( $menu['type'] == 'submenu' ) {
 			${$this->func . '_settings_page'} = add_submenu_page( $menu['parent'], $menu['page_title'], $menu['menu_title'], $menu['capability'], $this->slug . '-settings', array( $this, 'render_settings_page' ) );
