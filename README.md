@@ -4,7 +4,7 @@
 [![Code Coverage](https://scrutinizer-ci.com/g/Section214/S214-Settings-Demo/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/Section214/S214-Settings-Demo/?branch=master)
 [![License](https://img.shields.io/badge/license-GPL--2.0%2B-green.svg)](https://github.com/Section214/S214-Settings/blob/master/license.txt)
 
-[![Packagist](https://img.shields.io/packagist/v/symfony/symfony.svg?maxAge=2592000)]()
+[![Packagist](https://img.shields.io/packagist/v/Section214/S214-Settings.svg?maxAge=2592000)]()
 [![Packagist Pre Release](https://img.shields.io/packagist/vpre/Section214/S214-Settings.svg?maxAge=2592000)]()
 
 
