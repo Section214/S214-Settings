@@ -123,7 +123,7 @@ class S214_Settings {
 		add_action( 'admin_init', array( $this, 'process_actions' ) );
 
 		// Handle tooltips
-		add_filter( 's214_after_setting_output', array( $this, 'add_setting_tooltip' ), 10, 2 );
+		add_filter( $this->func . '_after_setting_output', array( $this, 'add_setting_tooltip' ), 10, 2 );
 	}
 
 
@@ -668,7 +668,7 @@ class S214_Settings {
 		$html .= '<input type="checkbox" id="' . $this->func . '_settings[' . $args['id'] . ']"' . $name . ' value="1" ' . $checked . '/>&nbsp;';
 		$html .= '<span class="description"><label for="' . $this->func . '_settings[' . $args['id'] . ']">' . $args['desc'] . '</label></span>';
 
-		echo apply_filters( 's214_after_setting_output', $html, $args );
+		echo apply_filters( $this->func . '_after_setting_output', $html, $args );
 	}
 
 
@@ -696,7 +696,7 @@ class S214_Settings {
 		$html  = '<input type="text" class="s214-color-picker" id="' . $this->func . '_settings[' . $args['id'] . ']" name="' . $this->func . '_settings[' . $args['id'] . ']" value="' . esc_attr( $value ) . '" data-default-color="' . esc_attr( $default ) . '" />&nbsp;';
 		$html .= '<span class="s214-color-picker-label description"><label for="' . $this->func . '_settings[' . $args['id'] . ']">' . $args['desc'] . '</label></span>';
 
-		echo apply_filters( 's214_after_setting_output', $html, $args );
+		echo apply_filters( $this->func . '_after_setting_output', $html, $args );
 	}
 
 
@@ -711,7 +711,7 @@ class S214_Settings {
 	public function descriptive_text_callback( $args ) {
 		$html = wp_kses_post( $args['desc'] );
 
-		echo apply_filters( 's214_after_setting_output', $html, $args );
+		echo apply_filters( $this->func . '_after_setting_output', $html, $args );
 	}
 
 
@@ -755,7 +755,7 @@ class S214_Settings {
 		);
 		$html = '<br /><span class="description"><label for="' . $this->func . '_settings[' . $args['id'] . ']">' . $args['desc'] . '</label></span>';
 
-		echo apply_filters( 's214_after_setting_output', $html, $args );
+		echo apply_filters( $this->func . '_after_setting_output', $html, $args );
 	}
 
 
@@ -779,7 +779,7 @@ class S214_Settings {
 		$html  = '<textarea class="large-text s214-html" cols="50" rows="5" id="' . $this->func . '_settings[' . $args['id'] . ']" name="' . $this->func . '_settings[' . $args['id'] . ']">' . esc_textarea( stripslashes( $value ) ) . '</textarea>&nbsp;';
 		$html .= '<span class="description"><label for="' . $this->func . '_settings[' . $args['id'] . ']">' . $args['desc'] . '</label></span>';
 
-		echo apply_filters( 's214_after_setting_output', $html, $args );
+		echo apply_filters( $this->func . '_after_setting_output', $html, $args );
 	}
 
 
@@ -810,7 +810,7 @@ class S214_Settings {
 			}
 			$html .= '<p class="description">' . $args['desc'] . '</p>';
 
-			echo apply_filters( 's214_after_setting_output', $html, $args );
+			echo apply_filters( $this->func . '_after_setting_output', $html, $args );
 		}
 	}
 
@@ -843,7 +843,7 @@ class S214_Settings {
 		$html  = '<input type="number" step="' . esc_attr( $step ) . '" max="' . esc_attr( $max ) . '" min="' . esc_attr( $min ) . '" class="' . $size . '-text" id="' . $this->func . '_settings[' . $args['id'] . ']"' . $name . ' value="' . esc_attr( stripslashes( $value ) ) . '"' . $readonly . '/>&nbsp;';
 		$html .= '<span class="description"><label for="' . $this->func . '_settings[' . $args['id'] . ']">' . $args['desc'] . '</label></span>';
 
-		echo apply_filters( 's214_after_setting_output', $html, $args );
+		echo apply_filters( $this->func . '_after_setting_output', $html, $args );
 	}
 
 
@@ -870,7 +870,7 @@ class S214_Settings {
 		$html  = '<input type="password" class="' . $size . '-text" id="' . $this->func . '_settings[' . $args['id'] . ']" name="' . $this->func . '_settings[' . $args['id'] . ']" value="' . esc_attr( $value )  . '" />&nbsp;';
 		$html .= '<span class="description"><label for="' . $this->func . '_settings[' . $args['id'] . ']">' . $args['desc'] . '</label></span>';
 
-		echo apply_filters( 's214_after_setting_output', $html, $args );
+		echo apply_filters( $this->func . '_after_setting_output', $html, $args );
 	}
 
 
@@ -904,7 +904,7 @@ class S214_Settings {
 
 			$html .= '<p class="description">' . $args['desc'] . '</p>';
 
-			echo apply_filters( 's214_after_setting_output', $html, $args );
+			echo apply_filters( $this->func . '_after_setting_output', $html, $args );
 		}
 	}
 
@@ -958,7 +958,7 @@ class S214_Settings {
 		$html .= '</select>&nbsp;';
 		$html .= '<span class="description"><label for="' . $this->func . '_settings[' . $args['id'] . ']">' . $args['desc'] . '</label></span>';
 
-		echo apply_filters( 's214_after_setting_output', $html, $args );
+		echo apply_filters( $this->func . '_after_setting_output', $html, $args );
 	}
 
 
@@ -979,7 +979,7 @@ class S214_Settings {
 			$html .= '<a class="button button-primary" href="' . add_query_arg( $this->slug . '-settings-action', 'download_system_info' ) . '">' . __( 'Download System Info File', 's214-settings' ) . '</a>';
 			$html .= '</p>';
 
-			echo apply_filters( 's214_after_setting_output', $html, $args );
+			echo apply_filters( $this->func . '_after_setting_output', $html, $args );
 		}
 	}
 
@@ -1008,7 +1008,7 @@ class S214_Settings {
 		$html  = '<input type="text" class="' . $size . '-text" id="' . $this->func . '_settings[' . $args['id'] . ']"' . $name . ' value="' . esc_attr( stripslashes( $value ) )  . '"' . $readonly . '/>&nbsp;';
 		$html .= '<span class="description"><label for="' . $this->func . '_settings[' . $args['id'] . ']">' . $args['desc'] . '</label></span>';
 
-		echo apply_filters( 's214_after_setting_output', $html, $args );
+		echo apply_filters( $this->func . '_after_setting_output', $html, $args );
 	}
 
 
@@ -1032,7 +1032,7 @@ class S214_Settings {
 		$html  = '<textarea class="large-text" cols="50" rows="5" id="' . $this->func . '_settings[' . $args['id'] . ']" name="' . $this->func . '_settings[' . $args['id'] . ']">' . esc_textarea( stripslashes( $value ) ) . '</textarea>&nbsp;';
 		$html .= '<span class="description"><label for="' . $this->func . '_settings[' . $args['id'] . ']">' . $args['desc'] . '</label></span>';
 
-		echo apply_filters( 's214_after_setting_output', $html, $args );
+		echo apply_filters( $this->func . '_after_setting_output', $html, $args );
 	}
 
 
@@ -1059,7 +1059,7 @@ class S214_Settings {
 		$html .= '<span><input type="button" class="' . $this->func . '_settings_upload_button button-secondary" value="' . __( 'Upload File', 's214-settings' ) . '" /></span>&nbsp;';
 		$html .= '<span class="description"><label for="' . $this->func . '_settings[' . $args['id'] . ']">' . $args['desc'] . '</label></span>';
 
-		echo apply_filters( 's214_after_setting_output', $html, $args );
+		echo apply_filters( $this->func . '_after_setting_output', $html, $args );
 	}
 
 
@@ -1092,7 +1092,7 @@ class S214_Settings {
 
 		wp_nonce_field( $args['id'] . '-nonce', $args['id'] . '-nonce' );
 
-		echo apply_filters( 's214_after_setting_output', $html, $args );
+		echo apply_filters( $this->func . '_after_setting_output', $html, $args );
 	}
 
 
