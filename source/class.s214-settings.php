@@ -276,12 +276,12 @@ class S214_Settings {
 	/**
 	 * Retrieve settings tab sections
 	 *
-	 * @access      private
+	 * @access      public
 	 * @since       1.0.1
 	 * @param       string $tab The current tab
 	 * @return      array $section The section items
 	 */
-	private function get_settings_tab_sections( $tab = false ) {
+	public function get_settings_tab_sections( $tab = false ) {
 		$tabs     = false;
 		$sections = $this->get_registered_settings_sections();
 
