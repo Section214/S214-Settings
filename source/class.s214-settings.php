@@ -298,11 +298,11 @@ class S214_Settings {
 	/**
 	 * Retrieve the plugin settings
 	 *
-	 * @access      private
+	 * @access      public
 	 * @since       1.0.0
 	 * @return      array $settings The plugin settings
 	 */
-	private function get_registered_settings() {
+	public function get_registered_settings() {
 		return apply_filters( $this->func . '_registered_settings', array() );
 	}
 
