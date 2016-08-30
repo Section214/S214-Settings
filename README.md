@@ -1,6 +1,7 @@
 # S214 Settings Library
-[![Latest Release](https://img.shields.io/badge/dev-1.2.1-red.svg)](https://github.com/Section214/S214-Settings/releases/latest)
-[![Latest Release](https://img.shields.io/badge/dist-1.2.1-blue.svg)](https://github.com/Section214/S214-Settings/blob/master/dist/latest.zip?raw=true)
+[![Travis](https://img.shields.io/travis/Section214/S214-Settings-Demo.svg?maxAge=2592000)](https://travis-ci.org/Section214/S214-Settings-Demo/)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Section214/S214-Settings-Demo/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Section214/S214-Settings-Demo/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/Section214/S214-Settings-Demo/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/Section214/S214-Settings-Demo/?branch=master)
 [![License](https://img.shields.io/badge/license-GPL--2.0%2B-green.svg)](https://github.com/Section214/S214-Settings/blob/master/license.txt)
 
 ## What Is This?
