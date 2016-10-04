@@ -315,9 +315,9 @@ class S214_Settings {
 	 * @return      array $sections The registered sections
 	 */
 	private function get_registered_settings_sections() {
-		static $sections = false;
+		global ${$this->func . '_sections'};
 
-		if( $sections !== false ) {
+		if ( !empty( $sections ) ) {
 			return $sections;
 		}
 
