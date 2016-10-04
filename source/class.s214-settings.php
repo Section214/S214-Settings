@@ -317,13 +317,13 @@ class S214_Settings {
 	private function get_registered_settings_sections() {
 		global ${$this->func . '_sections'};
 
-		if ( !empty( $sections ) ) {
-			return $sections;
+		if ( !empty( ${$this->func . '_sections'} ) ) {
+			return ${$this->func . '_sections'};
 		}
 
-		$sections = apply_filters( $this->func . '_registered_settings_sections', array() );
+		${$this->func . '_sections'} = apply_filters( $this->func . '_registered_settings_sections', array() );
 
-		return $sections;
+		return ${$this->func . '_sections'};
 	}
 
 
