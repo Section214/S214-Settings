@@ -315,15 +315,15 @@ class S214_Settings {
 	 * @return      array $sections The registered sections
 	 */
 	private function get_registered_settings_sections() {
-		static $sections = false;
+		global ${$this->func . '_sections'};
 
-		if( $sections !== false ) {
-			return $sections;
+		if ( !empty( ${$this->func . '_sections'} ) ) {
+			return ${$this->func . '_sections'};
 		}
 
-		$sections = apply_filters( $this->func . '_registered_settings_sections', array() );
+		${$this->func . '_sections'} = apply_filters( $this->func . '_registered_settings_sections', array() );
 
-		return $sections;
+		return ${$this->func . '_sections'};
 	}
 
 
