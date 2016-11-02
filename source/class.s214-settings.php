@@ -1203,9 +1203,9 @@ class S214_Settings {
 		wp_enqueue_script( $this->slug . '-cm-php', $cm_cdn . 'mode/php/php.js', array( 'jquery', $this->slug . '-cm' ), '5.14.2' );
 		wp_enqueue_script( $this->slug . '-cm-clike', $cm_cdn . 'mode/clike/clike.js', array( 'jquery', $this->slug . '-cm' ), '5.14.2' );
 
-		wp_enqueue_style( $this->slug, $url_path . '/assets/css/admin' . $suffix . '.css', array(), $this->version );
-		wp_enqueue_script( $this->slug, $url_path . '/assets/js/admin' . $suffix . '.js', array( 'jquery' ), $this->version );
-		wp_localize_script( $this->slug, 's214_settings_vars', apply_filters( $this->func . 'localize_script', array(
+		wp_enqueue_style( $this->slug . '-s214-settings', $url_path . '/assets/css/admin' . $suffix . '.css', array(), $this->version );
+		wp_enqueue_script( $this->slug . '-s214-settings', $url_path . '/assets/js/admin' . $suffix . '.js', array( 'jquery' ), $this->version );
+		wp_localize_script( $this->slug . '-s214-settings', 's214_settings_vars', apply_filters( $this->func . 'localize_script', array(
 			'func'               => $this->func,
 			'image_media_button' => __( 'Insert Image', 's214-settings' ),
 			'image_media_title'  => __( 'Select Image', 's214-settings' ),
