@@ -98,6 +98,7 @@ class S214_Settings {
 			require_once 'modules/sysinfo/class.s214-sysinfo.php';
 		}
 		$this->sysinfo = new S214_Sysinfo( $this->slug, $this->func, $this->version );
+		$GLOBALS[$this->func . '_options'] = get_option($this->func.'_settings', true);
 	}
 
 
